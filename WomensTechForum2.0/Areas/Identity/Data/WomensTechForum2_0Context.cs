@@ -19,4 +19,11 @@ public class WomensTechForum2_0Context : IdentityDbContext<WomensTechForum2_0Use
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
     }
+
+    public DbSet<Models.MainCategory> MainCategory { get; set; } = default!;
+    public DbSet<Models.Post> Post { get; set; } = default!;
+    public DbSet<Models.SubCategory> SubCategory { get; set; } = default!;
+    public DbSet<Models.PostThread> PostThread { get; set; } = default!;
+    public DbSet<Models.LikePostThread> LikePostThread { get; set; } = default!;
+    public DbSet<Models.LikePost> LikePost { get; set; } = default!;
 }
