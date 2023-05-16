@@ -45,7 +45,7 @@ namespace WomensTechForum2._0.Pages
         public IFormFile UploadedImage { get; set; } //Läggs utanför databas-innehållet för att sparas som en sträng i db längre ner
 
 
-        public async Task<IActionResult> OnGetAsync(int chosenMainId, int chosenSubId, int chosenPostId, int deleteid, int deletePTid, int changeId, int changePTId)
+        public async Task<IActionResult> OnGetAsync(int chosenMainId, int chosenSubId, int chosenPostId, int deleteid, int deletePTid, int changeId, int changePTId, int unlikepostid, int likepostid, int unlikePTid, int likePTid)
         {
             Users = await _userManager.Users.ToListAsync();
             CurrentUser = await _userManager.GetUserAsync(User);
@@ -123,6 +123,62 @@ namespace WomensTechForum2._0.Pages
                     await _context.SaveChangesAsync();
                 }
             }
+            if (unlikepostid != 0)
+            {
+                LikePost likePost = await _context.LikePost.FindAsync(unlikepostid);
+
+                if (likePost != null)
+                {
+                    _context.LikePost.Remove(likePost); //ta bort inlägget
+                    await _context.SaveChangesAsync(); //Spara
+
+                    return RedirectToPage("./Forum");//Tillbaka till startsidan
+                }
+            }
+            if (likepostid != 0)
+            {
+                var likePost = new LikePost()
+                {
+                    PostId = likepostid,
+                    UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                };
+
+                _context.LikePost.Add(likePost); //lägg till i listan av likeposts
+                await _context.SaveChangesAsync(); //Spara
+
+                return RedirectToPage("./Forum");//Tillbaka till startsidan
+
+            }
+            if (unlikePTid != 0)
+            {
+                LikePostThread likePostThread = await _context.LikePostThread.FindAsync(unlikePTid);
+
+                if (likePostThread != null)
+                {
+                    _context.LikePostThread.Remove(likePostThread); //ta bort inlägget
+                    await _context.SaveChangesAsync(); //Spara
+
+                    return RedirectToPage("./Forum");//Tillbaka till startsidan
+                }
+            }
+            if (likePTid != 0)
+            {
+                var likePostThread = new LikePostThread()
+                {
+                    PostThreadId = likePTid,
+                    UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                };
+
+                _context.LikePostThread.Add(likePostThread); //lägg till i listan av likeposts
+                await _context.SaveChangesAsync(); //Spara
+
+                return RedirectToPage("./Forum");//Tillbaka till startsidan
+
+            }
+
+
+
+
 
             return Page();
         }
@@ -189,6 +245,14 @@ namespace WomensTechForum2._0.Pages
 
             return like != null;
         }
+
+        public bool CheckIfPTLiked(int postId, string userId)
+        {
+            var like = _context.LikePostThread.FirstOrDefault(p => p.PostThreadId == postId && p.UserId == userId);
+
+            return like != null;
+        }
+
         //public async Task<IActionResult> OnPostOffensiveAsync()
         //{
         //    ChosenPost.Offensive = true;
