@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using WomensTechForum2._0.Data;
 namespace WomensTechForum2._0
 {
     public class Program
@@ -5,6 +8,11 @@ namespace WomensTechForum2._0
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var connectionString = builder.Configuration.GetConnectionString("WomensTechForum2_0ContextConnection") ?? throw new InvalidOperationException("Connection string 'WomensTechForum2_0ContextConnection' not found.");
+
+            builder.Services.AddDbContext<WomensTechForum2_0Context>(options => options.UseSqlServer(connectionString));
+
+            builder.Services.AddDefaultIdentity<Areas.Identity.Data.WomensTechForum2_0User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WomensTechForum2_0Context>();
 
             // Add services to the container.
             builder.Services.AddRazorPages();
@@ -24,6 +32,7 @@ namespace WomensTechForum2._0
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapRazorPages();
