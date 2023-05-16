@@ -78,7 +78,8 @@
             {
                 <a class="text-decoration-none" asp-route-chosenPostId="@post.Id"><h1 class="display-4 text-black">@post.Header </h1></a>
                 int timeSincePost = DateTime.Now.Date.DayOfYear - post.Date.Value.DayOfYear;
-                <p>Postades för @timeSincePost dagar sedan av @Model.Users.FirstOrDefault(u => u.Id == post.UserId).UserName</p> //Ändrat till Users
+                <p>Postades för @timeSincePost dagar sedan av @Model.Users.FirstOrDefault(u => u.Id == post.UserId).UserName</p>
+                //Ändrat till Users
                 @*                <p class="text-muted">@users.FirstOrDefault(u => u.Id == post.UserId).UserName</p>
                <p><strong>@post.Header</strong></p>*@
                 <p>@post.Text</p>
@@ -116,7 +117,17 @@
 
             @if (Model.CurrentUser != null) //Ändrat check av inloggad user från signinmanager
             {
+
                 <button class="btn btn-secondary" onclick="openForm()">Svara</button>
+
+                @if (Model.CheckIfLiked(Model.ChosenPost.Id, Model.CurrentUser.Id))
+                {
+                    <a asp-route-unlikepostid="@Model.ChosenPost.Id"><i class="bi bi-heart-fill text-danger mx-1"></i></a>
+                }
+                else
+                {
+                    <a asp-route-likepostid="@Model.ChosenPost.Id"><i class="bi bi-heart text-danger mx-1"></i></a>
+                }
 
                 <!--Anmälfunktion-->
 

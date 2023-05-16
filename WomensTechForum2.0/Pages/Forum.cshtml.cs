@@ -32,7 +32,8 @@ namespace WomensTechForum2._0.Pages
         public PostThread ChosenPostThread { get; set; }
         public List<Post> Posts { get; set; }
         public List<PostThread> PostThreads { get; set; }
-
+        public List<LikePost> LikedPosts { get; set; }
+        public List<LikePostThread> LikedPostThreads { get; set; }
 
         [BindProperty]
         public Post NewPost { get; set; }
@@ -52,6 +53,9 @@ namespace WomensTechForum2._0.Pages
             SubCategories = await _context.SubCategory.ToListAsync();
             Posts = await _context.Post.ToListAsync();
             PostThreads = await _context.PostThread.ToListAsync();
+            LikedPosts = await _context.LikePost.ToListAsync();
+            LikedPostThreads = await _context.LikePostThread.ToListAsync();
+
 
             if (chosenMainId != 0)
             {
@@ -177,6 +181,13 @@ namespace WomensTechForum2._0.Pages
 
 
             return RedirectToPage("./Forum");
+        }
+
+        public bool CheckIfLiked(int postId, string userId)
+        {
+            var like = _context.LikePost.FirstOrDefault(p => p.PostId == postId && p.UserId == userId);
+
+            return like != null;
         }
         //public async Task<IActionResult> OnPostOffensiveAsync()
         //{
