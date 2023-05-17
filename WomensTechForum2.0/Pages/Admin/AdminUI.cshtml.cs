@@ -148,7 +148,7 @@ namespace WomensTechForum2._0.Pages.Admin
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (ModelState.IsValid)
+            if (NewMainCategory.Name != null && NewMainCategory.Id != null)
             {
                 await SaveCategory(NewMainCategory);
             }
