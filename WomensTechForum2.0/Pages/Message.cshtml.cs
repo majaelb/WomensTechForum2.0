@@ -37,6 +37,7 @@ namespace WomensTechForum2._0.Pages
             if(chosenMessageId != 0)
             {
                 ChosenMessage = Messages.FirstOrDefault(m => m.Id == chosenMessageId);
+                await DAL.MessageManager.SaveMessage(ChosenMessage);
             }
 
             return Page();
