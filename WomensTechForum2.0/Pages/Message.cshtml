@@ -7,61 +7,89 @@
 
 @if (Model.CurrentUser != null)
 {
-    <h1>Dina meddelanden</h1>
-    @foreach (var mess in Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id))
-    {
-        var sender = Model.Users.FirstOrDefault(u => u.Id == @mess.SenderId);
 
-        <p class="lead">@mess.Title</p>
-        <p>Skickades @mess.DateTime.Value.ToString("f") från @sender.FirstName @sender.LastName </p>
-        <p>@mess.TextMessage</p>
+    <h1>Dina meddelanden</h1>
+    if (Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id) != null && Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id).Any())
+    {
+        if (Model.ChosenMessage != null)
+        {
+            var sender = Model.Users.FirstOrDefault(u => u.Id == @Model.ChosenMessage.SenderId);
+
+            <p class="lead">@Model.ChosenMessage.Title</p>
+            <p>Skickades @Model.ChosenMessage.DateTime.Value.ToString("f") från @sender.FirstName @sender.LastName </p>
+            <p>@Model.ChosenMessage.TextMessage</p>
+
+        }
+        else
+        {
+            <table class="table table-hover">
+                @foreach (var mess in Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id))
+                {
+                    var sender = Model.Users.FirstOrDefault(u => u.Id == @mess.SenderId);
+                    <tr>
+                        <td>@sender.FirstName @sender.LastName</td>
+                        <td><a asp-route-chosenMessageId="@mess.Id" class="lead">@mess.Title</a></td>
+                        @if (mess.DateTime.Value.Date == DateTime.Now.Date)
+                        {
+
+                            <td>@mess.DateTime.Value.ToString("t")</td>
+                        }
+                        else
+                        {
+                            <td>@mess.DateTime.Value.ToString("dd") @mess.DateTime.Value.ToString("MMMM")</td>
+                        }
+                    </tr>
+                }
+            </table>
+        }
+    }
+    else
+    {
+        <p>Inga meddelanden...</p>
     }
 
-
-    <h1>Skicka meddelande</h1>
-    <form method="post">
-
-        @*<label asp-for="NewMessage.Id"></label>
-    <input asp-for="NewMessage.Id" />
-    <span asp-validation-for="NewMessage.Id" class="text-danger"></span>
-    <br />*@
-        <label asp-for="NewMessage.Title"></label>
-        <br>
-        <input asp-for="NewMessage.Title" />
-        <span asp-validation-for="NewMessage.Title" class="text-danger"></span>
-        <br />
-        <label asp-for="NewMessage.TextMessage"></label>
-        <br>
-        <textarea asp-for="NewMessage.TextMessage"></textarea>
-        <span asp-validation-for="NewMessage.TextMessage" class="text-danger"></span>
-        <br />
-        @*    <label asp-for="NewMessage.DateTime"></label>
-    <input asp-for="NewMessage.DateTime" />
-    <span asp-validation-for="NewMessage.DateTime" class="text-danger"></span>
-    <br />*@
-        @*<label asp-for="NewMessage.SenderId"></label>*@
-        <input asp-for="NewMessage.SenderId" type="hidden" value="@Model.CurrentUser.Id" />
-        @*    <span asp-validation-for="NewMessage.SenderId" class="text-danger"></span>
-    *@    <br />
-
-        <div class="form-group">
-            <label asp-for="NewMessage.ReceiverId" class="control-label">Mottagare</label>
-           <select asp-for="NewMessage.ReceiverId" class="form-control" asp-items="ViewBag.ReceiverId"></select>
-     </div>
+    <button class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#enroll">
+        <i class="bi-plus larger-plusicon"> </i>
+        Nytt meddelande
+    </button>
+    <!--MODAL-->
+    <div class="modal fade" id="enroll" tabindex="-1" aria-labelledby="enrollLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="enrollLabel">Nytt meddelande</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="lead">Skicka nytt meddelande</p>
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="NewMessage.Title"></label>
+                            <br>
+                            <input asp-for="NewMessage.Title" />
+                            <span asp-validation-for="NewMessage.Title" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="NewMessage.TextMessage"></label>
+                            <br>
+                            <textarea asp-for="NewMessage.TextMessage"></textarea>
+                            <span asp-validation-for="NewMessage.TextMessage" class="text-danger"></span>
+                        </div>
+                        <input asp-for="NewMessage.SenderId" type="hidden" value="@Model.CurrentUser.Id" />
 
 
+                        <div class="form-group mb-3">
+                            <label asp-for="NewMessage.ReceiverId" class="control-label">Mottagare</label>
+                            <select asp-for="NewMessage.ReceiverId" class="form-control" asp-items="ViewBag.ReceiverId"></select>
+                        </div>
 
-        @*<label asp-for="NewMessage.ReceiverId"></label>
-    <input asp-for="NewMessage.ReceiverId" />
-    <span asp-validation-for="NewMessage.ReceiverId" class="text-danger"></span>*@
-        <br />
-        @*<label asp-for="NewMessage.IsRead"></label>
-    <input asp-for="NewMessage.IsRead" />
-    <span asp-validation-for="NewMessage.IsRead" class="text-danger"></span>
-    <br />*@
-        <input type="submit" value="Skicka" />
-
-
-    </form>
-
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stäng</button>
+                            <input class="btn btn-secondary" type="submit" value="Skicka" data-bs-dismiss="modal" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 }

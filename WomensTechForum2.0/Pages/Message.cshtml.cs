@@ -17,13 +17,15 @@ namespace WomensTechForum2._0.Pages
         public List<Message> Messages { get; set; }
         public List<WomensTechForum2_0User> Users { get; set; }
         public WomensTechForum2_0User CurrentUser { get; set; }
+        [BindProperty]
+        public Message ChosenMessage { get; set; }
 
         public MessageModel(UserManager<WomensTechForum2_0User> userManager)
         {
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(int chosenMessageId)
         {
             ViewData["ReceiverId"] = new SelectList(_userManager.Users, "Id", "FirstName");
 
@@ -31,6 +33,11 @@ namespace WomensTechForum2._0.Pages
             Users = await _userManager.Users.ToListAsync();
             CurrentUser = await _userManager.GetUserAsync(User);
             Messages = await DAL.MessageManager.GetAllMessages();
+
+            if(chosenMessageId != 0)
+            {
+                ChosenMessage = Messages.FirstOrDefault(m => m.Id == chosenMessageId);
+            }
 
             return Page();
         }
