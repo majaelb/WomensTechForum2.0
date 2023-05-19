@@ -10,7 +10,10 @@
     <h1>Dina meddelanden</h1>
     @foreach (var mess in Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id))
     {
+        var sender = Model.Users.FirstOrDefault(u => u.Id == @mess.SenderId);
+
         <p class="lead">@mess.Title</p>
+        <p>Skickades @mess.DateTime.Value.ToString("f") från @sender.FirstName @sender.LastName </p>
         <p>@mess.TextMessage</p>
     }
 
@@ -23,11 +26,13 @@
     <span asp-validation-for="NewMessage.Id" class="text-danger"></span>
     <br />*@
         <label asp-for="NewMessage.Title"></label>
+        <br>
         <input asp-for="NewMessage.Title" />
         <span asp-validation-for="NewMessage.Title" class="text-danger"></span>
         <br />
         <label asp-for="NewMessage.TextMessage"></label>
-        <input asp-for="NewMessage.TextMessage" />
+        <br>
+        <textarea asp-for="NewMessage.TextMessage"></textarea>
         <span asp-validation-for="NewMessage.TextMessage" class="text-danger"></span>
         <br />
         @*    <label asp-for="NewMessage.DateTime"></label>
