@@ -25,7 +25,7 @@ namespace WomensTechForum2._0.Pages
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> OnGetAsync(int chosenMessageId)
+        public async Task<IActionResult> OnGetAsync(int chosenMessageId, int deleteId, int deletemsgId)
         {
             ViewData["ReceiverId"] = new SelectList(_userManager.Users, "Id", "FirstName");
 
@@ -38,6 +38,18 @@ namespace WomensTechForum2._0.Pages
             {
                 ChosenMessage = Messages.FirstOrDefault(m => m.Id == chosenMessageId);
                 await DAL.MessageManager.SaveMessage(ChosenMessage);
+            }
+
+            if(deleteId != 0)
+            {
+                await DAL.MessageManager.DeleteMessage(deleteId);
+                Messages = await DAL.MessageManager.GetAllMessages();
+            }
+
+            if (deletemsgId != 0)
+            {
+                await DAL.MessageManager.DeleteMessage(deletemsgId);
+                Messages = await DAL.MessageManager.GetAllMessages();
             }
 
             return Page();
