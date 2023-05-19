@@ -27,22 +27,46 @@
         else
         {
             <table class="table table-hover">
-                @foreach (var mess in Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id))
+                @foreach (var mess in Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id).OrderByDescending(m => m.DateTime))
                 {
-                    var sender = Model.Users.FirstOrDefault(u => u.Id == @mess.SenderId);
-                    <tr>
-                        <td>@sender.FirstName @sender.LastName</td>
-                        <td><a asp-route-chosenMessageId="@mess.Id" class="lead">@mess.Title</a></td>
-                        @if (mess.DateTime.Value.Date == DateTime.Now.Date)
-                        {
 
-                            <td>@mess.DateTime.Value.ToString("t")</td>
-                        }
-                        else
-                        {
-                            <td>@mess.DateTime.Value.ToString("dd") @mess.DateTime.Value.ToString("MMMM")</td>
-                        }
-                    </tr>
+                    var sender = Model.Users.FirstOrDefault(u => u.Id == @mess.SenderId);
+                    @if (mess.IsRead == false)
+                    {
+                        <tr>
+                            <td class="fw-bold">@sender.FirstName @sender.LastName</td>
+                            <td class="fw-bold"><a asp-route-chosenMessageId="@mess.Id" class="lead text-black fw-bold text-decoration-none">@mess.Title</a></td>
+
+                            @if (mess.DateTime.Value.Date == DateTime.Now.Date)
+                            {
+
+                                <td class="fw-bold">@mess.DateTime.Value.ToString("t")</td>
+                            }
+                            else
+                            {
+                                <td class="fw-bold">@mess.DateTime.Value.ToString("dd") @mess.DateTime.Value.ToString("MMMM")</td>
+                            }
+                            <td><i class="bi bi-trash-fill"></i></td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>@sender.FirstName @sender.LastName</td>
+                            <td><a asp-route-chosenMessageId="@mess.Id" class="lead text-decoration-none text-black">@mess.Title</a></td>
+
+                            @if (mess.DateTime.Value.Date == DateTime.Now.Date)
+                            {
+
+                                <td>@mess.DateTime.Value.ToString("t")</td>
+                            }
+                            else
+                            {
+                                <td>@mess.DateTime.Value.ToString("dd") @mess.DateTime.Value.ToString("MMMM")</td>
+                            }
+                            <td><i class="bi bi-trash-fill"></i></td>
+                        </tr>
+                    }
                 }
             </table>
         }
@@ -52,7 +76,7 @@
         <p>Inga meddelanden...</p>
     }
 
-    
+
     <!--MODAL-->
     <div class="modal fade" id="message" tabindex="-1" aria-labelledby="messageLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -82,7 +106,7 @@
                         <input asp-for="NewMessage.SenderId" type="hidden" value="@Model.CurrentUser.Id" />
 
 
-                        
+
 
                         <div class="modal-footer">
                             <input class="btn btn-secondary" type="submit" value="Skicka" data-bs-dismiss="modal" />
