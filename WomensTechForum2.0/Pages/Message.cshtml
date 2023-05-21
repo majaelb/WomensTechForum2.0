@@ -47,16 +47,19 @@
                                 </div>*@
                                 <div class="form-group mb-3">
                                     <input asp-for="NewMessage.Title" type="hidden" value="[RE] @Model.ChosenMessage.Title" />
+                                    <label class="form-label" asp-for="NewMessage.Title"></label>
+                                    <p text-muted>[RE] @Model.ChosenMessage.Title</p>
                                   @*  <label class="form-label" asp-for="NewMessage.Title"></label>
                                     <br>
                                     <input class="form-control" asp-for="NewMessage.Title" />
                                     <span asp-validation-for="NewMessage.Title" class="text-danger"></span>*@
-                                    <p text-muted>[RE] @Model.ChosenMessage.Title</p>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label class="form-label" asp-for="NewMessage.TextMessage"></label>
+                                    <label class="bg-light text-muted">Tidigare meddelande:</label>
+                                    <p class="bg-light text-muted">@Model.ChosenMessage.TextMessage</p>
+                                    <label class="form-label" asp-for="NewMessage.TextMessage">Meddelande</label>
                                     <br>
-                                    <textarea class="form-control" asp-for="NewMessage.TextMessage"></textarea>
+                                    <textarea class="form-control" asp-for="NewMessage.TextMessage"> </textarea>
                                     <span asp-validation-for="NewMessage.TextMessage" class="text-danger"></span>
                                 </div>
                                 <input asp-for="NewMessage.ReceiverId" type="hidden" value="@messagesender.Id" />

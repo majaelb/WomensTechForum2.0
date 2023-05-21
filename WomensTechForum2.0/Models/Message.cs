@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace WomensTechForum2._0.Models
 {
@@ -8,9 +9,11 @@ namespace WomensTechForum2._0.Models
         public int Id { get; set; }
 
         [JsonPropertyName("title")]
+        [Display(Name = "Rubrik")]
         public string? Title { get; set; }
 
         [JsonPropertyName("textMessage")]
+        [Display(Name = "Meddelande")]
         public string? TextMessage { get; set; }
 
         [JsonPropertyName("dateTime")]
