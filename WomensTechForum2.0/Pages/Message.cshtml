@@ -23,9 +23,9 @@
             <p class="lead">
                 @Model.ChosenMessage.Title
             </p>
-                <a data-bs-toggle="modal" data-bs-target="#answermessage"><i class="bi bi-arrow-90deg-left"></i></a>
+            <a class="pe-auto" href="#" data-bs-toggle="modal" data-bs-target="#answermessage" data-bs-toggle="tooltip" title="Svara"><i class="bi bi-arrow-90deg-left"></i></a>
     
-                <a asp-route-deleteId="@Model.ChosenMessage.Id"><i class="bi bi-trash"></i></a>
+                <a asp-route-deleteId="@Model.ChosenMessage.Id" data-bs-toggle="tooltip" title="Radera"><i class="bi bi-trash"></i></a>
 
             <p>Skickades @Model.ChosenMessage.DateTime.Value.ToString("f") från @messagesender.FirstName @messagesender.LastName </p>
             <p>@Model.ChosenMessage.TextMessage</p>
@@ -46,10 +46,12 @@
                                     <select asp-for="NewMessage.ReceiverId" class="form-control" asp-items="ViewBag.ReceiverId"></select>
                                 </div>*@
                                 <div class="form-group mb-3">
-                                    <label class="form-label" asp-for="NewMessage.Title"></label>
+                                    <input asp-for="NewMessage.Title" type="hidden" value="[RE] @Model.ChosenMessage.Title" />
+                                  @*  <label class="form-label" asp-for="NewMessage.Title"></label>
                                     <br>
                                     <input class="form-control" asp-for="NewMessage.Title" />
-                                    <span asp-validation-for="NewMessage.Title" class="text-danger"></span>
+                                    <span asp-validation-for="NewMessage.Title" class="text-danger"></span>*@
+                                    <p text-muted>[RE] @Model.ChosenMessage.Title</p>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label" asp-for="NewMessage.TextMessage"></label>
