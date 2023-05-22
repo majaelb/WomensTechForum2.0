@@ -6,12 +6,27 @@
 @{
     var messages = await DAL.MessageManager.GetAllMessages();
     var user = await UserManager.GetUserAsync(User);
+    
+
 }
 
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        bool isAdmin = await UserManager.IsInRoleAsync(user, "Admin");
+        @if (isAdmin)
+        {
+            <li class="nav-item dropdown">
+                <a class="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown" asp-area="" asp-page="/Admin/AdminUI">Admin</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-page="/Admin/AdminUI">Kategorier</a></li>
+                    <li><a class="dropdown-item" asp-page="/Admin/ReportedPost">Anmälda inlägg</a></li>
+                    <li><a class="dropdown-item" asp-page="/Admin/RoleAdmin/Index">Roller</a></li>
+                </ul>
+            </li>
+        }
+
         //Räkna hur många olästa meddelanden den inloggade användaren har
         int unreadMessages = messages.Where(m => m.ReceiverId == user.Id).Where(m => m.IsRead == false).Count();
 

@@ -16,8 +16,17 @@ namespace WomensTechForum2._0
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<WomensTechForum2_0Context>();
 
-            // Add services to the container.
-            builder.Services.AddRazorPages();
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminRequired",
+                    policy => policy.RequireRole("Admin"));
+            });
+
+            builder.Services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeFolder("/Admin", "AdminRequired");
+                options.Conventions.AuthorizeFolder("/AdminScaffold", "AdminRequired");
+            });
 
             var app = builder.Build();
 

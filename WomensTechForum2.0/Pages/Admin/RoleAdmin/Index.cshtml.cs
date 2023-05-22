@@ -28,6 +28,10 @@ namespace WomensTechForum2._0.Pages.Admin.RoleAdmin
 
         [BindProperty(SupportsGet = true)]
         public string Role { get; set; }
+        [BindProperty]
+        public int ModalUserId { get; set; }
+        [BindProperty]
+        public string ModalRoleName { get; set; }
 
         //public bool IsUser { get; set; }
         //public bool IsAdmin { get; set; }
@@ -40,24 +44,28 @@ namespace WomensTechForum2._0.Pages.Admin.RoleAdmin
             _userManager = userManager;
             _roleManager = roleManager;
         }
+        public void OnGet(int modalUserId, string modalRoleName)
+        {
 
+            ModalUserId = modalUserId;
+            ModalRoleName = modalRoleName;
+        }
 
         public async Task<IActionResult> OnGetAsync()
         {
             Roles = await _roleManager.Roles.ToListAsync();
             Users = await _userManager.Users.ToListAsync();
-
             if (AddUserId != null)
             {
                 var alterUser = await _userManager.FindByIdAsync(AddUserId);
                 var roleResult = await _userManager.AddToRoleAsync(alterUser, Role);
             }
-
             if (RemoveUserId != null)
             {
                 var alterUser = await _userManager.FindByIdAsync(RemoveUserId);
                 var roleResult = await _userManager.RemoveFromRoleAsync(alterUser, Role);
             }
+
 
             //Demo av roller
             //var currentUser = await _userManager.GetUserAsync(User);
