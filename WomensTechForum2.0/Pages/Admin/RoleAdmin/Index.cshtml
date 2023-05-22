@@ -25,17 +25,6 @@
     </div>
 </div>
 
-@*<div>
-    @if (Model.IsAdmin)
-    {
-        <p class="alert alert-danger">Det här får bara admin se!</p>
-    }
-    @if (Model.IsUser)
-    {
-        <p class="alert alert-success">Det här får bara användare se!</p>
-    }
-</div>*@
-
 <div>
     <h3>Befintliga användare:</h3>
     @if (Model.Users != null && Model.Users.Any())
@@ -59,20 +48,24 @@
                         if (await Model._userManager.IsInRoleAsync(user, role.Name))
                         {
                             <td>
-                                <a asp-route-modalRoleName="@role.Name" asp-route-modalUserId="@user.Id" class="btn btn-success text-white p-1" data-bs-toggle="modal" data-bs-target="#myModal">Ja</a>
-                                <a id="openModalLink" asp-page="Index" asp-route-id="@user.Id" data-id="@user.Id">Öppna modal</a>
+
+                                <a data-modal-role-name="@role.Name" data-modal-user-id="@user.Id" class="btn btn-success text-white p-1 modal-trigger">Ja</a>
+
+
+                                @*<a asp-route-modalRoleName="@role.Name" asp-route-modalUserId="@user.Id" class="btn btn-success text-white p-1" data-bs-toggle="modal" data-bs-target="#myModal">Ja</a>*@
+                                @*<a id="openModalLink" asp-page="Index" asp-route-id="@user.Id" data-id="@user.Id">Öppna modal</a>*@
 
                             </td>
                         }
                         else
                         {
                             <td>
-                               
-                                <a href="?AddUserId=@user.Id&Role=@role.Name" class="btn btn-danger text-white p-1" >Nej</a>
-                                <a id="openModalLink" asp-page="Index" asp-route-id="@user.Id" data-id="@user.Id">Öppna modal</a>
+
+                                <a href="?AddUserId=@user.Id&Role=@role.Name" class="btn btn-danger text-white p-1">Nej</a>
+                                @*<a id="openModalLink" asp-page="Index" asp-route-id="@user.Id" data-id="@user.Id">Öppna modal</a>*@
 
                             </td>
-                            
+
                         }
                     }
                 </tr>
@@ -81,21 +74,44 @@
         </table>
 
 
-        <div id="myModal" class="modal">
-            <div class="modal-content">
-                <span id="modalId"></span>
-                <a href="?RemoveUserId=@Model.ModalUserId&Role=@Model.ModalRoleName" class="btn btn-danger">Ja</a>
+        @*        <div id="myModal" class="modal">
+    <div class="modal-content">
+    <span id="modalId"></span>
+    <a href="?RemoveUserId=@Model.ModalUserId&Role=@Model.ModalRoleName" class="btn btn-danger">Ja</a>
 
-                <!-- Övrig innehåll i modalen -->
-            </div>
-        </div>
-
-
-
+    <!-- Övrig innehåll i modalen -->
+    </div>
+    </div>*@
 
 
 
         <!-- The Modal -->
+        @* <div class="modal" id="myModal">*@
+        <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Ta bort admin</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <p>Vill du verkligen ta bort adminrollen?</p>
+                        <p>Det mottagna id't och rollnamn är: <span id="modalUserId"></span> och <span id="modalRoleName"></span></p>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <a href="#" id="confirmDelete" class="btn btn-danger">Ja</a>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Nej</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@*        <!-- The Modal -->
         <div class="modal" id="myModal">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -122,6 +138,4 @@
 
                 </div>
             </div>
-        </div>
-    }
-</div>
+        </div>*@

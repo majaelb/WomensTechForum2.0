@@ -33,9 +33,6 @@ namespace WomensTechForum2._0.Pages.Admin.RoleAdmin
         [BindProperty]
         public string ModalRoleName { get; set; }
 
-        //public bool IsUser { get; set; }
-        //public bool IsAdmin { get; set; }
-
 
 
         public IndexModel(RoleManager<IdentityRole> roleManager,
