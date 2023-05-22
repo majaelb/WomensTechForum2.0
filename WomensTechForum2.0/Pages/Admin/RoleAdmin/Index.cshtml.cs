@@ -44,17 +44,14 @@ namespace WomensTechForum2._0.Pages.Admin.RoleAdmin
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public void OnGet(int modalUserId, string modalRoleName)
-        {
+     
 
-            ModalUserId = modalUserId;
-            ModalRoleName = modalRoleName;
-        }
-
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(int modalUserId, string modalRoleName)
         {
             Roles = await _roleManager.Roles.ToListAsync();
             Users = await _userManager.Users.ToListAsync();
+            ModalUserId = modalUserId;
+            ModalRoleName = modalRoleName;
             if (AddUserId != null)
             {
                 var alterUser = await _userManager.FindByIdAsync(AddUserId);

@@ -60,6 +60,8 @@
                         {
                             <td>
                                 <a asp-route-modalRoleName="@role.Name" asp-route-modalUserId="@user.Id" class="btn btn-success text-white p-1" data-bs-toggle="modal" data-bs-target="#myModal">Ja</a>
+                                <a id="openModalLink" asp-page="Index" asp-route-id="@user.Id" data-id="@user.Id">Öppna modal</a>
+
                             </td>
                         }
                         else
@@ -67,6 +69,8 @@
                             <td>
                                
                                 <a href="?AddUserId=@user.Id&Role=@role.Name" class="btn btn-danger text-white p-1" >Nej</a>
+                                <a id="openModalLink" asp-page="Index" asp-route-id="@user.Id" data-id="@user.Id">Öppna modal</a>
+
                             </td>
                             
                         }
@@ -75,6 +79,21 @@
             }
 
         </table>
+
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span id="modalId"></span>
+                <a href="?RemoveUserId=@Model.ModalUserId&Role=@Model.ModalRoleName" class="btn btn-danger">Ja</a>
+
+                <!-- Övrig innehåll i modalen -->
+            </div>
+        </div>
+
+
+
+
+
 
         <!-- The Modal -->
         <div class="modal" id="myModal">
