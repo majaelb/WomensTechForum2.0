@@ -12,7 +12,9 @@ namespace WomensTechForum2._0
 
             builder.Services.AddDbContext<WomensTechForum2_0Context>(options => options.UseSqlServer(connectionString));
 
-            builder.Services.AddDefaultIdentity<Areas.Identity.Data.WomensTechForum2_0User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<WomensTechForum2_0Context>();
+            builder.Services.AddDefaultIdentity<Areas.Identity.Data.WomensTechForum2_0User>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<WomensTechForum2_0Context>();
 
             // Add services to the container.
             builder.Services.AddRazorPages();
