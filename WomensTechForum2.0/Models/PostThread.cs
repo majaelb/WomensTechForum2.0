@@ -17,5 +17,7 @@ namespace WomensTechForum2._0.Models
         public string UserId { get; set; }
         public virtual Post? Post { get; set; }
         public int PostId { get; set; }
+
+        public int? PTAnswerId { get; set; }
     }
 }

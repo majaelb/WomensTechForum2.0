@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WomensTechForum2._0.Data;
 
@@ -11,9 +12,11 @@ using WomensTechForum2._0.Data;
 namespace WomensTechForum2._0.Migrations
 {
     [DbContext(typeof(WomensTechForum2_0Context))]
-    partial class WomensTechForum2_0ContextModelSnapshot : ModelSnapshot
+    [Migration("20230523114430_Add_PtAnswerId")]
+    partial class Add_PtAnswerId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

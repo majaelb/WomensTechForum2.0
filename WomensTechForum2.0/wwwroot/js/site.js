@@ -13,6 +13,17 @@ function closeForm() {
     document.getElementById("myForm").style.display = "none";
 }
 
+function openPTForm(postThreadId) {
+    var form = document.querySelector(".myPTForm-" + postThreadId);
+    form.style.display = "block";
+}
+
+function closePTForm(postThreadId) {
+    var form = document.querySelector(".myPTForm-" + postThreadId);
+    form.style.display = "none";
+}
+
+
 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
