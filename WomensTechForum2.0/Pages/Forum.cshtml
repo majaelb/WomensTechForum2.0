@@ -258,6 +258,10 @@
                             <a data-modal-postthread-id="@postthread.Id" class="btn btn-danger text-white p-1 modal-PT-trigger">Anmäl inlägg</a>
                         }
                     }
+                    else
+                    {
+                        <a href="#" class="btn btn-outline-danger" title="Vill du anmäla inlägget?" data-bs-toggle="popover" data-bs-content="Logga in för att kunna anmäla ett inlägg" data-bs-trigger="focus">Anmäl inlägg</a>
+                    }
 
                     <div class="form-popup myPTForm-@postthread.Id">
                         <div class="row">
@@ -307,33 +311,28 @@
 
             }
         }
-
         else
         {
-            <a href="#" class="btn btn-outline-danger" title="Vill du anmäla inlägget?" data-bs-toggle="popover" data-bs-content="Logga in för att kunna anmäla ett inlägg" data-bs-trigger="focus">Anmäl inlägg</a>
+            <hr />
+            <p>Inga svar ännu...</p>
+        }
+
+    }
+}
+
+
+
+else
+{
+    @foreach (var cat in Model.MainCategories)
+    {
+        <a class="text-decoration-none" asp-route-chosenMainId="@cat.Id"><h1 class="display-4 text-black">@cat.Name </h1></a>
+        @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == cat.Id))
+        {
+            <p class="lead"><a class="text-decoration-none" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
+
         }
     }
-}
-
-else
-{
-    <hr />
-    <p>Inga svar ännu...</p>
-}
-}
-
-
-else
-{
-@foreach (var cat in Model.MainCategories)
-{
-    <a class="text-decoration-none" asp-route-chosenMainId="@cat.Id"><h1 class="display-4 text-black">@cat.Name </h1></a>
-    @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == cat.Id))
-    {
-        <p class="lead"><a class="text-decoration-none" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
-
-    }
-}
 }
 
 
