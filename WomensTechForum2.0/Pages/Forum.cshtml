@@ -257,6 +257,17 @@
                             @*<button class="btn btn-secondary" onclick="openPTForm()">Svara</button>*@
                             <a data-modal-postthread-id="@postthread.Id" class="btn btn-danger text-white p-1 modal-PT-trigger">Anmäl inlägg</a>
                         }
+                        @if (Model.CheckIfPTLiked(postthread.Id, Model.CurrentUser.Id))
+                        {
+                            <a asp-route-unlikePTid="@postthread.Id"><i class="bi bi-heart-fill text-danger mx-1"></i></a>
+                        }
+                        else
+                        {
+                            <a asp-route-likePTid="@postthread.Id"><i class="bi bi-heart text-danger mx-1"></i></a>
+                        }
+
+                        var count = @Model.LikedPostThreads.Where(p => p.PostThreadId == postthread.Id).Count();
+                        <span>Likes: @count</span>
                     }
                     else
                     {
@@ -293,22 +304,6 @@
                     </div>
                 </div>
 
-
-
-
-
-                @if (Model.CheckIfPTLiked(postthread.Id, Model.CurrentUser.Id))
-                {
-                    <a asp-route-unlikePTid="@postthread.Id"><i class="bi bi-heart-fill text-danger mx-1"></i></a>
-                }
-                else
-                {
-                    <a asp-route-likePTid="@postthread.Id"><i class="bi bi-heart text-danger mx-1"></i></a>
-                }
-
-                var count = @Model.LikedPostThreads.Where(p => p.PostThreadId == postthread.Id).Count();
-                <span>Likes: @count</span>
-
             }
         }
         else
@@ -318,19 +313,17 @@
         }
 
     }
-}
 
-
-
-else
-{
-    @foreach (var cat in Model.MainCategories)
+    else
     {
-        <a class="text-decoration-none" asp-route-chosenMainId="@cat.Id"><h1 class="display-4 text-black">@cat.Name </h1></a>
-        @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == cat.Id))
+        @foreach (var cat in Model.MainCategories)
         {
-            <p class="lead"><a class="text-decoration-none" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
+            <a class="text-decoration-none" asp-route-chosenMainId="@cat.Id"><h1 class="display-4 text-black">@cat.Name </h1></a>
+            @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == cat.Id))
+            {
+                <p class="lead"><a class="text-decoration-none" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
 
+            }
         }
     }
 }
