@@ -249,13 +249,14 @@
                     {
                         <a asp-route-deletePTid="@postthread.Id" class="btn btn-primary">Ta bort</a>
                     }
-                    if (Model.CurrentUser != null) //Ändrat check av inloggad user från signinmanager
+                    @if (Model.CurrentUser != null) //Ändrat check av inloggad user från signinmanager
                     {
-                    if (Model.CurrentUser.Gender != "Man")
-                    {
-                    <button class="btn btn-secondary" onclick="openPTForm(@postthread.Id)">Svara</button>
-                    @*<button class="btn btn-secondary" onclick="openPTForm()">Svara</button>*@
-                    <a data-modal-postthread-id="@postthread.Id" class="btn btn-danger text-white p-1 modal-PT-trigger">Anmäl inlägg</a>
+                        @if (Model.CurrentUser.Gender != "Man")
+                        {
+                            <button class="btn btn-secondary" onclick="openPTForm(@postthread.Id)">Svara</button>
+                            @*<button class="btn btn-secondary" onclick="openPTForm()">Svara</button>*@
+                            <a data-modal-postthread-id="@postthread.Id" class="btn btn-danger text-white p-1 modal-PT-trigger">Anmäl inlägg</a>
+                        }
                     }
 
                     <div class="form-popup myPTForm-@postthread.Id">
@@ -305,14 +306,13 @@
                 <span>Likes: @count</span>
 
             }
-        else
-            {
-                <a href="#" class="btn btn-outline-danger" title="Vill du anmäla inlägget?" data-bs-toggle="popover" data-bs-content="Logga in för att kunna anmäla ett inlägg" data-bs-trigger="focus">Anmäl inlägg</a>
-            }
         }
 
+        else
+        {
+            <a href="#" class="btn btn-outline-danger" title="Vill du anmäla inlägget?" data-bs-toggle="popover" data-bs-content="Logga in för att kunna anmäla ett inlägg" data-bs-trigger="focus">Anmäl inlägg</a>
+        }
     }
-
 }
 
 else
@@ -321,7 +321,6 @@ else
     <p>Inga svar ännu...</p>
 }
 }
-
 
 
 else
@@ -336,6 +335,7 @@ else
     }
 }
 }
+
 
 
 
