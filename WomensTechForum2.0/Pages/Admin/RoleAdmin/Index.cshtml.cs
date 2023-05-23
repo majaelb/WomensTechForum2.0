@@ -28,11 +28,6 @@ namespace WomensTechForum2._0.Pages.Admin.RoleAdmin
 
         [BindProperty(SupportsGet = true)]
         public string Role { get; set; }
-        [BindProperty]
-        public int ModalUserId { get; set; }
-        [BindProperty]
-        public string ModalRoleName { get; set; }
-
 
 
         public IndexModel(RoleManager<IdentityRole> roleManager,
@@ -43,12 +38,11 @@ namespace WomensTechForum2._0.Pages.Admin.RoleAdmin
         }
      
 
-        public async Task<IActionResult> OnGetAsync(int modalUserId, string modalRoleName)
+        public async Task<IActionResult> OnGetAsync()
         {
             Roles = await _roleManager.Roles.ToListAsync();
             Users = await _userManager.Users.ToListAsync();
-            ModalUserId = modalUserId;
-            ModalRoleName = modalRoleName;
+
             if (AddUserId != null)
             {
                 var alterUser = await _userManager.FindByIdAsync(AddUserId);
@@ -60,15 +54,6 @@ namespace WomensTechForum2._0.Pages.Admin.RoleAdmin
                 var roleResult = await _userManager.RemoveFromRoleAsync(alterUser, Role);
             }
 
-
-            //Demo av roller
-            //var currentUser = await _userManager.GetUserAsync(User);
-            //if (currentUser != null)
-            //{
-
-            //    IsUser = await _userManager.IsInRoleAsync(currentUser, "User");
-            //    IsAdmin = await _userManager.IsInRoleAsync(currentUser, "Admin");
-            //}
 
             return Page();
         }

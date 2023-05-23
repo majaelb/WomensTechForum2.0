@@ -236,7 +236,8 @@
                 }
                 if (Model.CurrentUser != null) //Ändrat check av inloggad user från signinmanager
                 {
-                    <a asp-route-changePTId="@postthread.Id" class="btn btn-outline-danger">Anmäl inlägg</a>
+@*                    <a asp-route-changePTId="@postthread.Id" class="btn btn-outline-danger">Anmäl inlägg</a>
+*@                    <a data-modal-postthread-id="@postthread.Id" id="modal-trigger" class="btn btn-danger text-white p-1">Anmäl inlägg</a>
 
                     @if (Model.CheckIfPTLiked(postthread.Id, Model.CurrentUser.Id))
                     {
@@ -256,39 +257,6 @@
                     @*<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#myModal2">
                         Anmäl inlägg
                     </button>*@
-
-                    <!-- The Modal -->
-                    @*<div class="modal" id="myModal2">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-
-                                <!-- Modal Header -->
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Anmälan</h4>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-
-                                <!-- Modal body -->
-                                <div class="modal-body">
-                                    Vill du verkligen anmäla inlägget?
-                                </div>
-
-                                <!-- Modal footer -->
-                                <div class="modal-footer">
-                                    <form method="post">
-                                      <input asp-for="@Model.ChosenPost.NoOfReports" type="hidden">
-                                        <input type="submit" class="btn btn-danger" asp-page-handler="Offensive" data-bs-dismiss="modal" value="Ja">
-                                    </form>
-                                    <p>@postthread.Id</p>
-                                    <p>@postthread.PostId</p>
-                                    <a asp-route-changePTId="@postthread.Id" class="btn btn-danger">Ja</a>
-
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Nej</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>*@
                 }
                 else
                 {
@@ -316,3 +284,29 @@
         }
     }
 }
+
+
+<!-- The Modal anmälan postthread -->
+<div class="modal" id="myPTModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Anmälan</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p>Vill du verkligen anmäla inlägget?</p>
+                <p>Det mottagna id't är: <span id="modalPTId"></span></p>
+                
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+@*                <a id="confirmReport" asp-route-changeId="" class="btn btn-danger">Ja</a>
+*@               <a href="#" id="confirmReport" class="btn btn-danger">Ja</a>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Nej</button>
+            </div>
+        </div>
+    </div>
+</div>
