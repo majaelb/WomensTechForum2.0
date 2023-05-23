@@ -25,7 +25,7 @@
         <h1>@Model.ChosenSubCategory.Name</h1>
 
 
-        @if (Model.CurrentUser != null) //Ändrat check av inloggad user
+        @if (Model.CurrentUser != null && Model.CurrentUser.Gender != "Man") //Ändrat check av inloggad user
         {
             <button class="btn btn-secondary" onclick="openForm()">Ny tråd</button>
             <div class="form-popup" id="myForm">
@@ -61,13 +61,16 @@
                     </div>
                 </div>
             </div>
+        }
 
-
+        else if (Model.CurrentUser != null && Model.CurrentUser.Gender == "Man")
+        {
+            <a href="#" class="btn btn-secondary" title="Vill du skapa en ny tråd?" data-bs-toggle="popover" data-bs-content="Du måste vara kvinna för att skapa en ny forumtråd" data-bs-trigger="focus">Ny tråd</a>
         }
         else
         {
             @*TODO:   Lägg till en Logga in button i popover*@
-            <a href="#" class="btn btn-secondary" title="Vill du skapa en ny tråd?" data-bs-toggle="popover" data-bs-content="Logga in för att skapa en ny forumtråd" data-bs-trigger="focus">Ny tråd</a>
+            <a href="#" class="btn btn-secondary" title="Vill du skapa en ny tråd?" data-bs-toggle="popover" data-bs-content="Du måste vara inloggad för att skapa en ny forumtråd" data-bs-trigger="focus">Ny tråd</a>
         }
 
         var chosenPosts = Model.Posts.Where(p => p.SubCategoryId == Model.ChosenSubCategory.Id);
@@ -117,7 +120,7 @@
                 <a asp-route-deleteid="@Model.ChosenPost.Id" class="btn btn-primary">Ta bort</a>
             }
 
-            @if (Model.CurrentUser != null) //Ändrat check av inloggad user från signinmanager
+            @if (Model.CurrentUser != null && Model.CurrentUser.Gender != "Man") //Ändrat check av inloggad user från signinmanager
             {
 
                 <button class="btn btn-secondary" onclick="openForm()">Svara</button>
@@ -159,10 +162,6 @@
 
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                @*<form method="post">
-                    <input asp-for="@Model.ChosenPost.NoOfReports" type="hidden">
-                    <input type="submit" class="btn btn-danger" asp-page-handler="Offensive" data-bs-dismiss="modal" value="Ja">
-                    </form>*@
 
                                 <a asp-route-changeId="@Model.ChosenPost.Id" class="btn btn-danger">Ja</a>
 
@@ -203,6 +202,10 @@
                 </div>
 
             }
+            else if (Model.CurrentUser != null && Model.CurrentUser.Gender == "Man")
+            {
+                <a href="#" class="btn btn-secondary" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-content="Du måste vara kvinna för att svara på inläggen" data-bs-trigger="focus">Svara</a>
+            }
             else
             @*Post Threads*@
 
@@ -236,8 +239,10 @@
                 }
                 if (Model.CurrentUser != null) //Ändrat check av inloggad user från signinmanager
                 {
-@*                    <a asp-route-changePTId="@postthread.Id" class="btn btn-outline-danger">Anmäl inlägg</a>
-*@                    <a data-modal-postthread-id="@postthread.Id" id="modal-trigger" class="btn btn-danger text-white p-1">Anmäl inlägg</a>
+                    if (Model.CurrentUser.Gender != "Man")
+                    {
+                        <a data-modal-postthread-id="@postthread.Id" class="btn btn-danger text-white p-1 modal-PT-trigger">Anmäl inlägg</a>
+                    }
 
                     @if (Model.CheckIfPTLiked(postthread.Id, Model.CurrentUser.Id))
                     {
@@ -250,13 +255,6 @@
 
                     var count = @Model.LikedPostThreads.Where(p => p.PostThreadId == postthread.Id).Count();
                     <span>Likes: @count</span>
-
-
-                    @*<a class="btn btn-outline-danger">Anmäl inlägg</a>*@
-                    <!--Anmälfunktion-->
-                    @*<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#myModal2">
-                        Anmäl inlägg
-                    </button>*@
                 }
                 else
                 {
@@ -298,13 +296,12 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <p>Vill du verkligen anmäla inlägget?</p>
-                <p>Det mottagna id't är: <span id="modalPTId"></span></p>
-                
+
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
-@*                <a id="confirmReport" asp-route-changeId="" class="btn btn-danger">Ja</a>
-*@               <a href="#" id="confirmReport" class="btn btn-danger">Ja</a>
+                @*                <a id="confirmReport" asp-route-changeId="" class="btn btn-danger">Ja</a>
+                *@               <a href="#" id="confirmReport" class="btn btn-danger">Ja</a>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Nej</button>
             </div>
         </div>

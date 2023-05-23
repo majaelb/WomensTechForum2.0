@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
 using WomensTechForum2._0.Areas.Identity.Data;
 using WomensTechForum2._0.Models;
@@ -68,6 +69,8 @@ namespace WomensTechForum2._0.Pages
             if (chosenPostId != 0)
             {
                 ChosenPost = Posts.FirstOrDefault(c => c.Id == chosenPostId);
+                //TempData["ScrollToElement"] = "chosenPostId";
+               // return RedirectToPage("./Forum/chosenPostId" + chosenPostId);
             }
             if (deleteid != 0)
             {
@@ -125,7 +128,7 @@ namespace WomensTechForum2._0.Pages
             }
             if (unlikepostid != 0)
             {
-                LikePost likePost = await _context.LikePost.FindAsync(unlikepostid);
+                LikePost likePost = await _context.LikePost.FirstOrDefaultAsync(p => p.PostId == unlikepostid);
 
                 if (likePost != null)
                 {
@@ -147,11 +150,12 @@ namespace WomensTechForum2._0.Pages
                 await _context.SaveChangesAsync(); //Spara
 
                 return RedirectToPage("./Forum");//Tillbaka till startsidan
-
+                //return RedirectToPage("https://localhost:44316/Forum?chosenPostId=" + likePost.PostId);
             }
             if (unlikePTid != 0)
             {
-                LikePostThread likePostThread = await _context.LikePostThread.FindAsync(unlikePTid);
+
+                LikePostThread likePostThread = await _context.LikePostThread.FirstOrDefaultAsync(p => p.PostThreadId == unlikePTid);
 
                 if (likePostThread != null)
                 {
@@ -175,9 +179,6 @@ namespace WomensTechForum2._0.Pages
                 return RedirectToPage("./Forum");//Tillbaka till startsidan
 
             }
-
-
-
 
 
             return Page();
