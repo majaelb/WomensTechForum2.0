@@ -69,8 +69,7 @@
         }
         else
         {
-            @*TODO:   Lägg till en Logga in button i popover*@
-            <a href="#" class="btn btn-secondary" title="Vill du skapa en ny tråd?" data-bs-toggle="popover" data-bs-content="Du måste vara inloggad för att skapa en ny forumtråd" data-bs-trigger="focus">Ny tråd</a>
+            <a href="#" class="btn btn-secondary" title="Vill du skapa en ny tråd?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Du måste vara inloggad för att skapa en ny forumtråd <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Ny tråd</a>
         }
 
         var chosenPosts = Model.Posts.Where(p => p.SubCategoryId == Model.ChosenSubCategory.Id);
@@ -207,16 +206,14 @@
                 <a href="#" class="btn btn-secondary" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-content="Du måste vara kvinna för att svara på inläggen" data-bs-trigger="focus">Svara</a>
             }
             else
-            @*Post Threads*@
 
             {
-                @*TODO:   Lägg till en Logga in button i popover*@
-                <a href="#" class="btn btn-secondary" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-content="Logga in för att svara på inläggen" data-bs-trigger="focus">Svara</a>
-                <a href="#" class="btn btn-outline-danger" title="Vill du anmäla inlägget?" data-bs-toggle="popover" data-bs-content="Logga in för att kunna anmäla ett inlägg" data-bs-trigger="focus">Anmäl inlägg</a>
-
+                <a href="#" class="btn btn-secondary" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att svara på inläggen <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Svara</a>
+                <a href="#" class="btn btn-outline-danger" title="Vill du anmäla inlägget?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att anmäla ett inlägg <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Anmäl inlägg</a>
             }
         </div>
 
+        @*Post Threads*@
         var chosenPostThreads = Model.PostThreads.Where(p => p.PostId == Model.ChosenPost.Id);
         if (chosenPostThreads != null && chosenPostThreads.Any())
         {
@@ -226,7 +223,6 @@
                 var ptWriter = Model.Users.Where(u => u.Id == postthread.UserId).FirstOrDefault();
                 var originalWriterId = Model.Posts.FirstOrDefault(u => u.Id == postthread.PostId).UserId;
                 var originalWriter = Model.Users.FirstOrDefault(u => u.Id == originalWriterId);
-                //@if(ptWriter.Id == originalWriter.Id)
                 var color = ptWriter.Id == originalWriter.Id ? "bg-info bg-opacity-10" : "";
 
                 <hr />
@@ -236,7 +232,8 @@
                     @if (postthread.PTAnswerId != null)
                     {
                         var pt = Model.PostThreads.FirstOrDefault(p => p.Id == postthread.PTAnswerId);
-                        <p class="bg-light text-muted">Svarar på: @pt.Text</p>
+                        var ptwriter = Model.Users.FirstOrDefault(u => u.Id == pt.UserId);
+                        <p class="bg-light text-muted">@ptwriter.UserName skrev: @pt.Text</p>
                     }
 
                     <p>@postthread.Text</p>
@@ -271,7 +268,8 @@
                     }
                     else
                     {
-                        <a href="#" class="btn btn-outline-danger" title="Vill du anmäla inlägget?" data-bs-toggle="popover" data-bs-content="Logga in för att kunna anmäla ett inlägg" data-bs-trigger="focus">Anmäl inlägg</a>
+                        <a href="#" class="btn btn-secondary" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att svara på inläggen <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Svara</a>
+                        <a href="#" class="btn btn-outline-danger" title="Vill du anmäla inlägget?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att anmäla ett inlägg <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Anmäl inlägg</a>
                     }
 
                     <div class="form-popup myPTForm-@postthread.Id">
