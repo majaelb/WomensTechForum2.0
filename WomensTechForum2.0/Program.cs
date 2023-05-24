@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WomensTechForum2._0.Data;
+using WomensTechForum2._0.Helpers;
+
 namespace WomensTechForum2._0
 {
     public class Program
@@ -11,6 +13,7 @@ namespace WomensTechForum2._0
             var connectionString = builder.Configuration.GetConnectionString("WomensTechForum2_0ContextConnection") ?? throw new InvalidOperationException("Connection string 'WomensTechForum2_0ContextConnection' not found.");
 
             builder.Services.AddDbContext<WomensTechForum2_0Context>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddTransient<ForumManager>();
 
             builder.Services.AddDefaultIdentity<Areas.Identity.Data.WomensTechForum2_0User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()

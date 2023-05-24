@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 using WomensTechForum2._0.Areas.Identity.Data;
+using WomensTechForum2._0.Helpers;
 using WomensTechForum2._0.Models;
 
 namespace WomensTechForum2._0.Pages
@@ -14,11 +15,13 @@ namespace WomensTechForum2._0.Pages
     {
         private readonly Data.WomensTechForum2_0Context _context;
         public UserManager<WomensTechForum2_0User> _userManager;
+        private readonly ForumManager _forumManager;
 
-        public ForumModel(Data.WomensTechForum2_0Context context, UserManager<WomensTechForum2_0User> userManager)
+        public ForumModel(Data.WomensTechForum2_0Context context, UserManager<WomensTechForum2_0User> userManager, ForumManager forumManager)
         {
             _context = context;
             _userManager = userManager;
+            _forumManager = forumManager;
         }
 
         public List<WomensTechForum2_0User> Users { get; set; }
@@ -202,14 +205,17 @@ namespace WomensTechForum2._0.Pages
 
             if (UploadedImage != null)
             {
-                Random rnd = new();
-                fileName = rnd.Next(100000).ToString() + UploadedImage.FileName;
-                var file = "./wwwroot/img/" + fileName;
+                //Random rnd = new();
+                //fileName = rnd.Next(100000).ToString() + UploadedImage.FileName;
+                //var file = "./wwwroot/img/" + fileName;
+                fileName = _forumManager.SetFileName(fileName, UploadedImage);
+                var file = _forumManager.CreateFile(fileName);
+                await _forumManager.SaveFileAsync(file, UploadedImage);
 
-                using (var fileStream = new FileStream(file, FileMode.Create))
-                {
-                    await UploadedImage.CopyToAsync(fileStream);
-                }
+                //using (var fileStream = new FileStream(file, FileMode.Create))
+                //{
+                //    await UploadedImage.CopyToAsync(fileStream);
+                //}
             }
 
             NewPost.Date = DateTime.Now;
@@ -226,17 +232,21 @@ namespace WomensTechForum2._0.Pages
         public async Task<IActionResult> OnPostNewPostThreadAsync()
         {
             string fileName = string.Empty;
+            
 
             if (UploadedImage != null)
             {
-                Random rnd = new();
-                fileName = rnd.Next(100000).ToString() + UploadedImage.FileName;
-                var file = "./wwwroot/img/" + fileName;
+                //Random rnd = new();
+                //fileName = rnd.Next(100000).ToString() + UploadedImage.FileName;
+                //var file = "./wwwroot/img/" + fileName;
+                fileName = _forumManager.SetFileName(fileName, UploadedImage);
+                var file = _forumManager.CreateFile(fileName);
+                await _forumManager.SaveFileAsync(file, UploadedImage);
 
-                using (var fileStream = new FileStream(file, FileMode.Create))
-                {
-                    await UploadedImage.CopyToAsync(fileStream);
-                }
+                //using (var fileStream = new FileStream(file, FileMode.Create))
+                //{
+                //    await UploadedImage.CopyToAsync(fileStream);
+                //}
             }
 
             NewPostThread.Date = DateTime.Now;
@@ -250,18 +260,20 @@ namespace WomensTechForum2._0.Pages
             return Redirect(url);
         }
 
-        public bool CheckIfLiked(int postId, string userId)
-        {
-            var like = _context.LikePost.FirstOrDefault(p => p.PostId == postId && p.UserId == userId);
 
-            return like != null;
-        }
 
-        public bool CheckIfPTLiked(int postId, string userId)
-        {
-            var like = _context.LikePostThread.FirstOrDefault(p => p.PostThreadId == postId && p.UserId == userId);
+        //public bool CheckIfLiked(int postId, string userId)
+        //{
+        //    var like = _context.LikePost.FirstOrDefault(p => p.PostId == postId && p.UserId == userId);
 
-            return like != null;
-        }
+        //    return like != null;
+        //}
+
+        //public bool CheckIfPTLiked(int postId, string userId)
+        //{
+        //    var like = _context.LikePostThread.FirstOrDefault(p => p.PostThreadId == postId && p.UserId == userId);
+
+        //    return like != null;
+        //}
     }
 }

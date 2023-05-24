@@ -1,6 +1,7 @@
 ﻿@page
 @model WomensTechForum2._0.Pages.ForumModel
 @using Helpers
+@inject ForumManager forumManager
 @*@inject SignInManager<IdentityUser> SignInManager
 *@
 @{
@@ -141,7 +142,7 @@
                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#myModal">
                     Anmäl inlägg
                 </button>
-                @if (Model.CheckIfLiked(Model.ChosenPost.Id, Model.CurrentUser.Id))
+                @if (forumManager.CheckIfLiked(Model.ChosenPost.Id, Model.CurrentUser.Id))
                 {
                     <a asp-route-unlikepostid="@Model.ChosenPost.Id"><i class="bi bi-heart-fill text-danger mx-1"></i></a>
                 }
@@ -264,7 +265,7 @@
                             @*<button class="btn btn-secondary" onclick="openPTForm()">Svara</button>*@
                             <a data-modal-postthread-id="@postthread.Id" class="btn btn-danger text-white p-1 modal-PT-trigger">Anmäl inlägg</a>
                         }
-                        @if (Model.CheckIfPTLiked(postthread.Id, Model.CurrentUser.Id))
+                        @if (forumManager.CheckIfPTLiked(postthread.Id, Model.CurrentUser.Id))
                         {
                             <a asp-route-unlikePTid="@postthread.Id"><i class="bi bi-heart-fill text-danger mx-1"></i></a>
                         }
