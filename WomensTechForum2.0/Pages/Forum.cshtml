@@ -1,5 +1,6 @@
 ﻿@page
 @model WomensTechForum2._0.Pages.ForumModel
+@using Helpers
 @*@inject SignInManager<IdentityUser> SignInManager
 *@
 @{
@@ -8,7 +9,7 @@
     //var users = UserManager.Users.ToList();
 }
 
-<h1 class="display-4">Välkommen till Womens tech forum</h1>
+@*<h1 class="display-4">Välkommen till Womens tech forum</h1>*@
 
 @if (Model.MainCategories != null)
 {
@@ -22,12 +23,17 @@
     }
     else if (Model.ChosenSubCategory != null)
     {
-        <h1>@Model.ChosenSubCategory.Name</h1>
+        <section class="p-5">
+
+        <div class="container">
+            
+       
+        <h1 class="text-center display-3">@Model.ChosenSubCategory.Name</h1>
 
 
         @if (Model.CurrentUser != null && Model.CurrentUser.Gender != "Man") //Ändrat check av inloggad user
         {
-            <button class="btn btn-secondary" onclick="openForm()">Ny tråd</button>
+                <button class="btn btn-secondary" onclick="openForm()"><i class="bi bi-plus-lg"></i>Ny tråd <i class="bi bi-arrow-bar-right"></i></button>
             <div class="form-popup" id="myForm">
                 <div class="row">
                     <div class="col-md-4">
@@ -65,31 +71,34 @@
 
         else if (Model.CurrentUser != null && Model.CurrentUser.Gender == "Man")
         {
-            <a href="#" class="btn btn-secondary" title="Vill du skapa en ny tråd?" data-bs-toggle="popover" data-bs-content="Du måste vara kvinna för att skapa en ny forumtråd" data-bs-trigger="focus">Ny tråd</a>
+                <a href="#" class="btn btn-secondary" title="Vill du skapa en ny tråd?" data-bs-toggle="popover" data-bs-content="Du måste vara kvinna för att skapa en ny forumtråd" data-bs-trigger="focus"><i class="bi bi-plus"></i>Ny tråd <i class="bi bi-arrow-bar-right"></i></a>
         }
         else
         {
-            <a href="#" class="btn btn-secondary" title="Vill du skapa en ny tråd?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Du måste vara inloggad för att skapa en ny forumtråd <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Ny tråd</a>
+                <a href="#" class="btn btn-secondary" title="Vill du skapa en ny tråd?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Du måste vara inloggad för att skapa en ny forumtråd <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Ny tråd <i class="bi bi-arrow-bar-right"></i></a>
         }
 
-        var chosenPosts = Model.Posts.Where(p => p.SubCategoryId == Model.ChosenSubCategory.Id);
-
-        if (chosenPosts != null && chosenPosts.Any())
+        @{var chosenPosts = Model.Posts.Where(p => p.SubCategoryId == Model.ChosenSubCategory.Id);}
+        
+        @*--Inlägg i SubCategory--*@
+        @if (chosenPosts != null && chosenPosts.Any())
         {
             @foreach (var post in chosenPosts)
             {
-                <a class="text-decoration-none" asp-route-chosenPostId="@post.Id"><h1 class="display-4 text-black">@post.Header </h1></a>
-                int timeSincePost = DateTime.Now.Date.DayOfYear - post.Date.Value.DayOfYear;
-                <p>Postades för @timeSincePost dagar sedan av @Model.Users.FirstOrDefault(u => u.Id == post.UserId).UserName</p>
-                //Ändrat till Users
-                @*                <p class="text-muted">@users.FirstOrDefault(u => u.Id == post.UserId).UserName</p>
-               <p><strong>@post.Header</strong></p>*@
-                <p>@post.Text</p>
+                
+                <div class="card bg-light p-3 m-2">
+
+                <a class="text-decoration-none" asp-route-chosenPostId="@post.Id"><h1 class="display-6 text-dark">@post.Header </h1></a>
+                @{int timeSincePost = DateTime.Now.Date.DayOfYear - post.Date.Value.DayOfYear;}
+                <p class="text-muted">Postades för @timeSincePost dagar sedan av @Model.Users.FirstOrDefault(u => u.Id == post.UserId).UserName</p>
+                
+                <p>@post.Text.LimitLength(300)</p>
                 @if (post.ImageSrc != null && post.ImageSrc.Any())
                 {
                     <img src="~/img/@post.ImageSrc" height="250" />
                 }
-                <hr />
+    
+                </div>
             }
         }
         else
@@ -97,7 +106,8 @@
             <p>Inga inlägg ännu...</p>
         }
 
-
+        </div>
+        </section>
     }
     else if (Model.ChosenPost != null)
     {
