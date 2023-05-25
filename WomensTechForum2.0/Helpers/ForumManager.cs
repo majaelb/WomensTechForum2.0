@@ -15,7 +15,6 @@ namespace WomensTechForum2._0.Helpers
             _userManager = userManager;
            
         }
-       // public IFormFile UploadedImage { get; set; }
 
         public string SetFileName(string fileName, IFormFile UploadedImage)
         {

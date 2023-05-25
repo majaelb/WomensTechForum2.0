@@ -24,3 +24,60 @@ body {
 .form-popup {
     display: none;
 }
+
+.dark {
+    background: #110f16;
+}
+
+.dark-card {
+    background-color: #2a2a2a;
+}
+
+.postcard-image {
+    max-height: 180px;
+    width: 100%;
+    object-fit: cover;
+    position: relative;
+}
+
+.postcard {
+    flex-wrap: wrap;
+    display: flex;
+    box-shadow: 0 4px 21px -12px rgba(0, 0, 0, 0.66);
+    border-radius: 10px;
+    margin: 0 0 2rem 0;
+    overflow: hidden;
+    position: relative;
+    color: #ffffff;
+    background-image: linear-gradient(-70deg, #424242, transparent 50%);
+}
+
+.postcard__img_link {
+    display: contents;
+}
+
+.postcard-text {
+    padding: 1.5rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.postcard-post-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: justify;
+    height: 100%;
+}
+
+    .postcard-post-text:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        /*background-image: linear-gradient(-70deg, #424242, transparent 50%);*/
+        opacity: 1;
+        border-radius: 10px;
+    }
