@@ -26,10 +26,10 @@
     {
         <section class="dark">
 
-            <div class="container py-4">
+            <div class="container py-2">
 
 
-                <h1 class="text-center display-3">@Model.ChosenSubCategory.Name</h1>
+                <h1 class="text-center text-warning display-3">@Model.ChosenSubCategory.Name</h1>
 
 
                 @if (Model.CurrentUser != null && Model.CurrentUser.Gender != "Man") //Ändrat check av inloggad user
@@ -86,41 +86,47 @@
                 @*--Inlägg i SubCategory--*@
                 @if (chosenPosts != null && chosenPosts.Any())
                 {
-                    int counter = 0;
+                    @*int counter = 0;*@
 
                     @foreach (var post in chosenPosts)
                     {
 
-                        <article class="postcard dark-card text-white p-3 m-2">
-                            @if (counter % 2 == 0)
+                        <article class="postcard dark-card text-white py-1 px-4 m-2">
+                     @*       @if (counter % 2 == 0)
                             {
                                 @if (post.ImageSrc != null && post.ImageSrc.Any())
                                 {
-                                    <a class="postcard__img_link">
+                                   
                                         <img class="postcard-image" src="~/img/@post.ImageSrc" />
-                                    </a>
+                               
                                 }
-                            }
+                            }*@
+
                             <div class="postcard-text">
 
-                                <a class="text-decoration-none" asp-route-chosenPostId="@post.Id"><h1 class="display-6 text-white">@post.Header </h1></a>
+                                <a class="text-decoration-none " asp-route-chosenPostId="@post.Id"><h1 class="display-6 postcard-header">@post.Header </h1></a>
                                 @{
                                     int timeSincePost = DateTime.Now.Date.DayOfYear - post.Date.Value.DayOfYear;
                                 }
-                                <p class="text-light">Postades för @timeSincePost dagar sedan av @Model.Users.FirstOrDefault(u => u.Id == post.UserId).UserName</p>
+                                <p class="text-muted"><i class="bi bi-calendar3"> </i>@timeSincePost dagar sedan av @Model.Users.FirstOrDefault(u => u.Id == post.UserId).UserName</p>
+                                <div class="postcard-bar"></div>
                                 <div class="postcard-post-text">
 
                                     <p>@post.Text.LimitLength(300)</p>
 
                                 </div>
                             </div>
-                            @*             @if (post.ImageSrc != null && post.ImageSrc.Any())
-            {
-            <img src="~/img/@post.ImageSrc" height="250" />
-            }*@
+@*                            @if (counter % 2 != 0)
+                            {
+
+                                @if (post.ImageSrc != null && post.ImageSrc.Any())
+                                {
+                                    <img class="postcard-image" src="~/img/@post.ImageSrc" />
+                                }
+                            }*@
 
                         </article>
-                        counter++;
+                        @*counter++;*@
                     }
                 }
                 else
