@@ -145,7 +145,7 @@
         var chosensubcat = Model.SubCategories.FirstOrDefault(c => c.Id == Model.ChosenPost.SubCategoryId);
         var chosenmaincat = Model.MainCategories.FirstOrDefault(c => c.Id == @chosensubcat.MainCategoryId);
         var postdate = @Model.ChosenPost.Date.Value.ToString("dd") + " " + @Model.ChosenPost.Date.Value.ToString("Y") + " " + @Model.ChosenPost.Date.Value.ToString("t");
-
+       
         <section class="bg-dark">
             <div class="container py-2">
                 <h1 class="text-center text-warning display-3">Diskussionsforum</h1>
@@ -158,8 +158,13 @@
 
                         <div class="row">
                             <div class="col-sm-3">
-                                <img class="rounded-3" src="~/img/@writer.ImageSrc" height="50">
-                                <p> @Model.Users.FirstOrDefault(u => u.Id == Model.ChosenPost.UserId).UserName</p>
+                                <div class="card bg-secondary bg-opacity-10">
+                                    <div class="card-body text-center">
+                                        <img class="card-img w-50" src="~/img/@writer.ImageSrc">
+                                        <p class="card-title mb-3"> @writer.FirstName @writer.LastName</p>
+                                        <p class="card-text"> @writer.UserName</p>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-sm-9">
                                 <p><i class="bi bi-calendar3"></i> @postdate</p>
@@ -168,109 +173,109 @@
 
                                 @if (Model.ChosenPost.ImageSrc != null && Model.ChosenPost.ImageSrc.Any())
                                 {
-                                    <img class="post-image" src="~/img/@Model.ChosenPost.ImageSrc"  />
+                                    <img class="post-image" src="~/img/@Model.ChosenPost.ImageSrc" />
                                 }
                             </div>
                         </div>
                         <div class="btn-container">
-                        <br>
-                        @if (Model.CurrentUser != null && Model.CurrentUser.Id == Model.ChosenPost.UserId) //Ändrat till CurrentUser från user
-                        {
-                            <a asp-route-deleteid="@Model.ChosenPost.Id" class="btn btn-primary btn-sm">Ta bort</a>
-                        }
-
-                        @if (Model.CurrentUser != null && Model.CurrentUser.Gender != "Man") //Ändrat check av inloggad user från signinmanager
-                        {
-
-                            <button class="btn btn-secondary" onclick="openForm()">Svara</button>
-
-
-
-                            <!--Anmälfunktion-->
-
-                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#myModal">
-                                Anmäl inlägg
-                            </button>
-                            @if (forumManager.CheckIfLiked(Model.ChosenPost.Id, Model.CurrentUser.Id))
+                            <br>
+                            @if (Model.CurrentUser != null && Model.CurrentUser.Id == Model.ChosenPost.UserId) //Ändrat till CurrentUser från user
                             {
-                                <a asp-route-unlikepostid="@Model.ChosenPost.Id"><i class="bi bi-heart-fill text-danger mx-1"></i></a>
+                                <a asp-route-deleteid="@Model.ChosenPost.Id" class="btn btn-primary btn-sm">Ta bort</a>
+                            }
+
+                            @if (Model.CurrentUser != null && Model.CurrentUser.Gender != "Man") //Ändrat check av inloggad user från signinmanager
+                            {
+
+                                <button class="btn btn-secondary" onclick="openForm()">Svara</button>
+
+
+
+                                <!--Anmälfunktion-->
+
+                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#myModal">
+                                    Anmäl inlägg
+                                </button>
+                                @if (forumManager.CheckIfLiked(Model.ChosenPost.Id, Model.CurrentUser.Id))
+                                {
+                                    <a asp-route-unlikepostid="@Model.ChosenPost.Id"><i class="bi bi-heart-fill text-danger mx-1"></i></a>
+                                }
+                                else
+                                {
+                                    <a asp-route-likepostid="@Model.ChosenPost.Id"><i class="bi bi-heart text-danger mx-1"></i></a>
+                                }
+
+                                var count = @Model.LikedPosts.Where(p => p.PostId == Model.ChosenPost.Id).Count();
+                                <span>Likes: @count</span>
+
+                                <!-- The Modal -->
+                                <div class="modal" id="myModal">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Anmälan</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                Vill du verkligen anmäla inlägget?
+                                            </div>
+
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+
+                                                <a asp-route-changeId="@Model.ChosenPost.Id" class="btn btn-danger">Ja</a>
+
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Nej</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-popup" id="myForm">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <form method="post" enctype="multipart/form-data">
+                                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                                <div class="form-group">
+                                                    <label asp-for="NewPostThread.Text" class="control-label"></label>
+                                                    <textarea asp-for="NewPostThread.Text" class="form-control" rows="5" cols="40"></textarea>
+                                                    <span asp-validation-for="NewPostThread.Text" class="text-danger"></span>
+                                                </div>
+
+                                                <label asp-for="NewPostThread.ImageSrc" class="control-label"></label>
+                                                <input type="file" class="form-control" name="UploadedImage" />
+
+                                                <br>
+                                                <input asp-for="NewPostThread.PostId" type="hidden" value="@Model.ChosenPost.Id" />
+
+                                                <div class="form-group">
+                                                    <input type="submit" asp-page-handler="NewPostThread" value="Svara" class="btn btn-success" />
+                                                    <button type="button" class="btn btn-warning" onclick="closeForm()">Stäng</button>
+                                                </div>
+
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                            else if (Model.CurrentUser != null && Model.CurrentUser.Gender == "Man")
+                            {
+                                <a href="#" class="btn btn-secondary" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-content="Du måste vara kvinna för att svara på inläggen" data-bs-trigger="focus">Svara</a>
                             }
                             else
+
                             {
-                                <a asp-route-likepostid="@Model.ChosenPost.Id"><i class="bi bi-heart text-danger mx-1"></i></a>
+                                <a href="#" class="btn btn-secondary" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att svara på inläggen <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Svara</a>
+                                <a href="#" class="btn btn-outline-danger" title="Vill du anmäla inlägget?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att anmäla ett inlägg <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Anmäl inlägg</a>
                             }
-
-                            var count = @Model.LikedPosts.Where(p => p.PostId == Model.ChosenPost.Id).Count();
-                            <span>Likes: @count</span>
-
-                            <!-- The Modal -->
-                            <div class="modal" id="myModal">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-
-                                        <!-- Modal Header -->
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">Anmälan</h4>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-
-                                        <!-- Modal body -->
-                                        <div class="modal-body">
-                                            Vill du verkligen anmäla inlägget?
-                                        </div>
-
-                                        <!-- Modal footer -->
-                                        <div class="modal-footer">
-
-                                            <a asp-route-changeId="@Model.ChosenPost.Id" class="btn btn-danger">Ja</a>
-
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Nej</button>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-popup" id="myForm">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <form method="post" enctype="multipart/form-data">
-                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                                            <div class="form-group">
-                                                <label asp-for="NewPostThread.Text" class="control-label"></label>
-                                                <textarea asp-for="NewPostThread.Text" class="form-control" rows="5" cols="40"></textarea>
-                                                <span asp-validation-for="NewPostThread.Text" class="text-danger"></span>
-                                            </div>
-
-                                            <label asp-for="NewPostThread.ImageSrc" class="control-label"></label>
-                                            <input type="file" class="form-control" name="UploadedImage" />
-
-                                            <br>
-                                            <input asp-for="NewPostThread.PostId" type="hidden" value="@Model.ChosenPost.Id" />
-
-                                            <div class="form-group">
-                                                <input type="submit" asp-page-handler="NewPostThread" value="Svara" class="btn btn-success" />
-                                                <button type="button" class="btn btn-warning" onclick="closeForm()">Stäng</button>
-                                            </div>
-
-
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                        }
-                        else if (Model.CurrentUser != null && Model.CurrentUser.Gender == "Man")
-                        {
-                            <a href="#" class="btn btn-secondary" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-content="Du måste vara kvinna för att svara på inläggen" data-bs-trigger="focus">Svara</a>
-                        }
-                        else
-
-                        {
-                            <a href="#" class="btn btn-secondary" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att svara på inläggen <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Svara</a>
-                            <a href="#" class="btn btn-outline-danger" title="Vill du anmäla inlägget?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att anmäla ett inlägg <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Anmäl inlägg</a>
-                        }
                         </div>
                     </div>
                 </article>
