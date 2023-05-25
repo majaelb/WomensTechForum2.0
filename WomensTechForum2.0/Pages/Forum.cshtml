@@ -45,7 +45,7 @@
     {
 
         var chosenmaincat = Model.MainCategories.FirstOrDefault(c => c.Id == Model.ChosenSubCategory.MainCategoryId);
-
+     
         <section class="bg-dark">
 
             <div class="container py-2">
@@ -136,6 +136,7 @@
 
             </div>
         </section>
+        
     }
     else if (Model.ChosenPost != null)
     {
