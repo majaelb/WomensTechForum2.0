@@ -16,25 +16,48 @@
 {
     @if (Model.ChosenMainCategory != null)
     {
-        <h1>@Model.ChosenMainCategory.Name</h1>
-        @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == Model.ChosenMainCategory.Id))
-        {
-            <p class="lead"><a class="text-decoration-none" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
-        }
+        <section class="bg-dark">
+            <div class="container py-2">
+                <h1 class="text-center text-warning display-3">Diskussionsforum</h1>
+
+                <article class="postcard dark-card text-white py-1 px-4 m-2">
+                    <div class="postcard-text">
+                        <h1 class="display-6 postcard-header">@Model.ChosenMainCategory.Name </h1>
+                        <div class="postcard-bar"></div>
+                        @if ((Model.SubCategories.Where(s => s.MainCategoryId == Model.ChosenMainCategory.Id)).Any())
+                        {
+
+                            @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == Model.ChosenMainCategory.Id))
+                            {
+                                <p class="lead"><a class="text-decoration-none text-warning" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
+                            }
+                        }
+                        else
+                        {
+                            <p class="lead"><span class="small">Här kommer det snart spännande underkategorier..</span></p>
+                        }
+                    </div>
+                </article>
+            </div>
+        </section>
     }
     else if (Model.ChosenSubCategory != null)
     {
-        <section class="dark">
+
+        var chosenmaincat = Model.MainCategories.FirstOrDefault(c => c.Id == Model.ChosenSubCategory.MainCategoryId);
+
+        <section class="bg-dark">
 
             <div class="container py-2">
 
-
-                <h1 class="text-center text-warning display-3">@Model.ChosenSubCategory.Name</h1>
+                <h1 class="text-center text-warning display-3">Diskussionsforum</h1>
+                <div class="header-bar mx-auto"></div>
+                <h1 class="text-center text-warning display-5">@chosenmaincat.Name - @Model.ChosenSubCategory.Name</h1>
 
 
                 @if (Model.CurrentUser != null && Model.CurrentUser.Gender != "Man") //Ändrat check av inloggad user
                 {
-                    <button class="btn btn-secondary" onclick="openForm()"><i class="bi bi-plus-lg"></i>Ny tråd <i class="bi bi-arrow-bar-right"></i></button>
+                    <button class="new-thread-btn btn btn-warning" onclick="openForm()"><i class="bi bi-plus-lg"></i>Ny tråd <i class="bi bi-arrow-bar-right"></i></button>
                     <div class="form-popup" id="myForm">
                         <div class="row">
                             <div class="col-md-4">
@@ -72,11 +95,11 @@
 
                 else if (Model.CurrentUser != null && Model.CurrentUser.Gender == "Man")
                 {
-                    <a href="#" class="btn btn-secondary" title="Vill du skapa en ny tråd?" data-bs-toggle="popover" data-bs-content="Du måste vara kvinna för att skapa en ny forumtråd" data-bs-trigger="focus"><i class="bi bi-plus"></i>Ny tråd <i class="bi bi-arrow-bar-right"></i></a>
+                    <a href="#" class="new-thread-btn btn btn-warning" title="Vill du skapa en ny tråd?" data-bs-toggle="popover" data-bs-content="Du måste vara kvinna för att skapa en ny forumtråd" data-bs-trigger="focus"><i class="bi bi-plus"></i>Ny tråd <i class="bi bi-arrow-bar-right"></i></a>
                 }
                 else
                 {
-                    <a href="#" class="btn btn-secondary" title="Vill du skapa en ny tråd?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Du måste vara inloggad för att skapa en ny forumtråd <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Ny tråd <i class="bi bi-arrow-bar-right"></i></a>
+                    <a href="#" class="new-thread-btn btn btn-warning" title="Vill du skapa en ny tråd?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Du måste vara inloggad för att skapa en ny forumtråd <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Ny tråd <i class="bi bi-arrow-bar-right"></i></a>
                 }
 
                 @{
@@ -86,21 +109,9 @@
                 @*--Inlägg i SubCategory--*@
                 @if (chosenPosts != null && chosenPosts.Any())
                 {
-                    @*int counter = 0;*@
-
                     @foreach (var post in chosenPosts)
                     {
-
                         <article class="postcard dark-card text-white py-1 px-4 m-2">
-                     @*       @if (counter % 2 == 0)
-                            {
-                                @if (post.ImageSrc != null && post.ImageSrc.Any())
-                                {
-                                   
-                                        <img class="postcard-image" src="~/img/@post.ImageSrc" />
-                               
-                                }
-                            }*@
 
                             <div class="postcard-text">
 
@@ -108,25 +119,14 @@
                                 @{
                                     int timeSincePost = DateTime.Now.Date.DayOfYear - post.Date.Value.DayOfYear;
                                 }
-                                <p class="text-muted"><i class="bi bi-calendar3"> </i>@timeSincePost dagar sedan av @Model.Users.FirstOrDefault(u => u.Id == post.UserId).UserName</p>
+                                <p class="text-muted"><i class="bi bi-calendar3 text-warning"> </i>@timeSincePost dagar sedan av @Model.Users.FirstOrDefault(u => u.Id == post.UserId).UserName</p>
                                 <div class="postcard-bar"></div>
-                                <div class="postcard-post-text">
 
-                                    <p>@post.Text.LimitLength(300)</p>
+                                <p class="lead"><span class="small">@post.Text.LimitLength(300)</span></p>
 
-                                </div>
                             </div>
-@*                            @if (counter % 2 != 0)
-                            {
-
-                                @if (post.ImageSrc != null && post.ImageSrc.Any())
-                                {
-                                    <img class="postcard-image" src="~/img/@post.ImageSrc" />
-                                }
-                            }*@
 
                         </article>
-                        @*counter++;*@
                     }
                 }
                 else
@@ -352,15 +352,32 @@
 
     else
     {
-        @foreach (var cat in Model.MainCategories)
-        {
-            <a class="text-decoration-none" asp-route-chosenMainId="@cat.Id"><h1 class="display-4 text-black">@cat.Name </h1></a>
-            @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == cat.Id))
-            {
-                <p class="lead"><a class="text-decoration-none" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
+        <section class="bg-dark">
+            <div class="container py-2">
+                <h1 class="text-center text-warning display-3">Diskussionsforum</h1>
+                @foreach (var cat in Model.MainCategories)
+                {
+                    <article class="postcard dark-card text-white py-1 px-4 m-2">
+                        <div class="postcard-text">
+                            <a class="text-decoration-none" asp-route-chosenMainId="@cat.Id"><h1 class="display-6 postcard-header">@cat.Name </h1></a>
+                            <div class="postcard-bar"></div>
+                            @if ((Model.SubCategories.Where(s => s.MainCategoryId == cat.Id)).Any())
+                            {
 
-            }
-        }
+                                @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == cat.Id))
+                                {
+                                    <p class="lead"><a class="text-decoration-none text-warning" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
+                                }
+                            }
+                            else
+                            {
+                                <p class="lead"><span class="small">Här kommer det snart spännande underkategorier..</span></p>
+                            }
+                        </div>
+                    </article>
+                }
+            </div>
+        </section>
     }
 }
 

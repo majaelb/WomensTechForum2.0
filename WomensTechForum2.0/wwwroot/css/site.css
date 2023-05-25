@@ -42,7 +42,7 @@ body {
 
 .postcard-bar {
     width: 100px;
-    height: 10px;
+    height: 4px;
     margin: 10px 0;
     border-radius: 5px;
     background-color: #ffc107;
@@ -59,6 +59,8 @@ body {
     color: #ffc107;
 }
 
+
+
 .postcard {
     flex-wrap: wrap;
     display: flex;
@@ -71,9 +73,6 @@ body {
     background: linear-gradient(-70deg, #424242, transparent 50%);
 }
 
-.postcard__img_link {
-    display: contents;
-}
 
 .postcard-text {
     padding: 1.5rem;
@@ -82,14 +81,14 @@ body {
     flex-direction: column;
 }
 
-.postcard-post-text {
+/*.postcard-post-text {
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: justify;
     height: 100%;
-}
+}*/
 
-    .postcard-post-text:before {
+    /*.postcard-post-text:before {
         position: absolute;
         top: 0;
         right: 0;
@@ -97,4 +96,17 @@ body {
         left: 0;
         opacity: 1;
         border-radius: 10px;
-    }
+    }*/
+
+.new-thread-btn{
+    margin-left:55px;
+}
+
+.header-bar {
+    width: 150px;
+    height: 2px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background-color: #ffc107;
+    
+}
