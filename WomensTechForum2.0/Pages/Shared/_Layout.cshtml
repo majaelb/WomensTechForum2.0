@@ -38,15 +38,15 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid p-0">
+    <div class="container-fluid p-0 h-100">
         <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="footer text-muted bg-dark mt-auto py-3 min-vh-100">
+    <footer class="footer text-muted bg-dark mt-auto py-3"> @*min-vh-100*@
         <div class="container">
-            &copy; 2023 - WomensTechForum2._0 - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2023 - WomensTechForum2._0 - <a class="text-decoration-none privacy-footer" asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 

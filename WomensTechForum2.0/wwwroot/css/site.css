@@ -27,6 +27,12 @@ html {
 .register-link:hover {
     color: #ffc107;
 }
+.privacy-footer{
+    color:white;
+}
+.privacy-footer:hover {
+    color: #ffc107;
+}
 .form-popup {
     display: none;
 }

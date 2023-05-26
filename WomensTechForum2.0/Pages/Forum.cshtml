@@ -10,13 +10,12 @@
     //var users = UserManager.Users.ToList();
 }
 
-@*<h1 class="display-4">Välkommen till Womens tech forum</h1>*@
 
 @if (Model.MainCategories != null)
 {
     @if (Model.ChosenMainCategory != null)
     {
-        <section class="bg-dark">
+        <section class="bg-dark min-vh-100">
             <div class="p-2">
                 <h1 class="text-center text-warning display-3">Diskussionsforum</h1>
 
@@ -74,7 +73,7 @@
 
         var chosenmaincat = Model.MainCategories.FirstOrDefault(c => c.Id == Model.ChosenSubCategory.MainCategoryId);
 
-        <section class="bg-dark">
+        <section class="bg-dark min-vh-100">
 
             <div class="p-2">
 
@@ -200,7 +199,7 @@
         var chosenmaincat = Model.MainCategories.FirstOrDefault(c => c.Id == @chosensubcat.MainCategoryId);
         var postdate = @Model.ChosenPost.Date.Value.ToString("dd") + " " + @Model.ChosenPost.Date.Value.ToString("Y") + " " + @Model.ChosenPost.Date.Value.ToString("t");
 
-        <section class="bg-dark">
+        <section class="bg-dark min-vh-100">
             <div class=" p-2">
                 <h1 class="text-center text-warning display-3">Diskussionsforum</h1>
                 <div class="header-bar mx-auto"></div>
@@ -522,7 +521,7 @@
 
     else
     {
-        <section class="bg-dark">
+        <section class="bg-dark min-vh-100">
             <div class="container py-2">
                 <h1 class="text-center text-warning display-3">Diskussionsforum</h1>
                 @foreach (var cat in Model.MainCategories)
@@ -550,6 +549,7 @@
         </section>
     }
 }
+
 
 
 

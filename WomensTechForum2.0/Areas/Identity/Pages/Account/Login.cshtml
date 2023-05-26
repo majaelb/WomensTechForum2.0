@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Logga in";
 }
-<section class="bg-dark">
+<section class="bg-dark min-vh-100 pt-3">
     <div class="row">
         <div class="col-md-3">
         </div>
@@ -12,7 +12,7 @@
             <h1 class="text-warning">@ViewData["Title"]</h1>
             <form id="account" method="post">
                 <h2 class="text-warning">Använd ditt användarkonto</h2>
-                <hr />
+                <hr class="text-warning" />
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">
                     <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />

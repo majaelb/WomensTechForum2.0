@@ -32,6 +32,7 @@ namespace WomensTechForum2._0.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<WomensTechForum2_0User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+      
         public IFormFile UploadedImage { get; set; }
 
         public RegisterModel(
