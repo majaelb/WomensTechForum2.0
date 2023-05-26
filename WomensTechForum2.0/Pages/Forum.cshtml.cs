@@ -72,7 +72,7 @@ namespace WomensTechForum2._0.Pages
             }
             if (chosenPostId != 0)
             {
-                ChosenPost = Posts.FirstOrDefault(c => c.Id == chosenPostId);           
+                ChosenPost = Posts.FirstOrDefault(c => c.Id == chosenPostId);
             }
             if (deleteid != 0)
             {
@@ -163,7 +163,7 @@ namespace WomensTechForum2._0.Pages
 
                 string url = "./Forum?chosenPostId=" + likePost.PostId.ToString();
                 return Redirect(url);
-                
+
             }
             if (unlikePTid != 0)
             {
@@ -203,26 +203,29 @@ namespace WomensTechForum2._0.Pages
         {
             string fileName = string.Empty;
 
+            if(string.IsNullOrEmpty(NewPost.Header))
+            {
+                ModelState.AddModelError("NewPost.Header", "Du måste ange en rubrik");
+            }
+            if (string.IsNullOrEmpty(NewPost.Text))
+            {
+                ModelState.AddModelError("NewPost.Text", "Du måste skriva en text");
+            }
+
             if (UploadedImage != null)
             {
-                //Random rnd = new();
-                //fileName = rnd.Next(100000).ToString() + UploadedImage.FileName;
-                //var file = "./wwwroot/img/" + fileName;
                 fileName = _forumManager.SetFileName(fileName, UploadedImage);
                 var file = _forumManager.CreateFile(fileName);
                 await _forumManager.SaveFileAsync(file, UploadedImage);
-
-                //using (var fileStream = new FileStream(file, FileMode.Create))
-                //{
-                //    await UploadedImage.CopyToAsync(fileStream);
-                //}
             }
-
-            NewPost.Date = DateTime.Now;
-            NewPost.ImageSrc = fileName;
-            NewPost.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            _context.Add(NewPost);
-            await _context.SaveChangesAsync();
+            if (NewPost.Header != null && NewPost.Text != null)
+            {
+                NewPost.Date = DateTime.Now;
+                NewPost.ImageSrc = fileName;
+                NewPost.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                _context.Add(NewPost);
+                await _context.SaveChangesAsync();
+            }
 
             string url = "./Forum?chosenPostId=" + NewPost.Id.ToString();
             return Redirect(url);
@@ -232,48 +235,31 @@ namespace WomensTechForum2._0.Pages
         public async Task<IActionResult> OnPostNewPostThreadAsync()
         {
             string fileName = string.Empty;
-            
 
+            if (string.IsNullOrEmpty(NewPostThread.Text))
+            {
+                ModelState.AddModelError("NewPostThread.Text", "Du måste skriva en text");
+            }
             if (UploadedImage != null)
             {
-                //Random rnd = new();
-                //fileName = rnd.Next(100000).ToString() + UploadedImage.FileName;
-                //var file = "./wwwroot/img/" + fileName;
                 fileName = _forumManager.SetFileName(fileName, UploadedImage);
                 var file = _forumManager.CreateFile(fileName);
                 await _forumManager.SaveFileAsync(file, UploadedImage);
-
-                //using (var fileStream = new FileStream(file, FileMode.Create))
-                //{
-                //    await UploadedImage.CopyToAsync(fileStream);
-                //}
             }
 
-            NewPostThread.Date = DateTime.Now;
-            NewPostThread.ImageSrc = fileName;
-            NewPostThread.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (NewPostThread.Text != null)
+            {
 
-            _context.Add(NewPostThread);
-            await _context.SaveChangesAsync();
+                NewPostThread.Date = DateTime.Now;
+                NewPostThread.ImageSrc = fileName;
+                NewPostThread.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                _context.Add(NewPostThread);
+                await _context.SaveChangesAsync();
+            }
 
             string url = "./Forum?chosenPostId=" + NewPostThread.PostId.ToString();
             return Redirect(url);
         }
-
-
-
-        //public bool CheckIfLiked(int postId, string userId)
-        //{
-        //    var like = _context.LikePost.FirstOrDefault(p => p.PostId == postId && p.UserId == userId);
-
-        //    return like != null;
-        //}
-
-        //public bool CheckIfPTLiked(int postId, string userId)
-        //{
-        //    var like = _context.LikePostThread.FirstOrDefault(p => p.PostThreadId == postId && p.UserId == userId);
-
-        //    return like != null;
-        //}
     }
 }

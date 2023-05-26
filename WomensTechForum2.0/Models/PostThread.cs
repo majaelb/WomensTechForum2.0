@@ -7,7 +7,8 @@ namespace WomensTechForum2._0.Models
         public int Id { get; set; }
 
         [Display(Name = "Inlägg")]
-        [Required] public string Text { get; set; }
+        [Required(ErrorMessage = "Du måste skriva en text")] 
+        public string Text { get; set; }
         public DateTime? Date { get; set; }
         public bool Offensive { get; set; }
         public int NoOfReports { get; set; }

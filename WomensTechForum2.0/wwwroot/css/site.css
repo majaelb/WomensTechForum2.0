@@ -72,6 +72,7 @@ html {
     position: relative;
     color: #ffffff;
     background: linear-gradient(-70deg, #424242, transparent 50%);
+
 }
 
 
@@ -80,6 +81,9 @@ html {
     position: relative;
     display: flex;
     flex-direction: column;
+}
+.report:hover{
+    cursor: pointer;
 }
 
 /*.postcard-post-text {
