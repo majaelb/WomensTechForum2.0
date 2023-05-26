@@ -17,27 +17,55 @@
     @if (Model.ChosenMainCategory != null)
     {
         <section class="bg-dark">
-            <div class="container py-2">
+            <div class="p-2">
                 <h1 class="text-center text-warning display-3">Diskussionsforum</h1>
 
-                <article class="postcard dark-card text-white py-1 px-4 m-2">
-                    <div class="postcard-text">
-                        <h1 class="display-6 postcard-header">@Model.ChosenMainCategory.Name </h1>
-                        <div class="postcard-bar"></div>
-                        @if ((Model.SubCategories.Where(s => s.MainCategoryId == Model.ChosenMainCategory.Id)).Any())
-                        {
-
-                            @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == Model.ChosenMainCategory.Id))
+                <div class="row">
+                    <div class="col-md-2 text-center text-white">
+                        <article class="menucard dark-card text-white hide-on-small-screen">
+                            @foreach (var cat in Model.MainCategories)
                             {
-                                <p class="lead"><a class="text-decoration-none text-warning" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
+                                <div class="postcard-text p-2">
+                                    <a class="text-decoration-none" asp-route-chosenMainId="@cat.Id"><h4 class="postcard-header font-weight-lighter text-warning">@cat.Name </h4></a>
+                                    <div class="postcard-bar m-auto"></div>
+                                    @if ((Model.SubCategories.Where(s => s.MainCategoryId == cat.Id)).Any())
+                                    {
+
+                                        @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == cat.Id))
+                                        {
+                                            <p class="lead "><a class="text-decoration-none subcatlink" asp-route-chosenSubId="@sub.Id">@sub.Name</a></p>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p class="lead"><span class="small">Kommer snart...</span></p>
+                                    }
+                                </div>
                             }
-                        }
-                        else
-                        {
-                            <p class="lead"><span class="small">Här kommer det snart spännande underkategorier..</span></p>
-                        }
+                        </article>
                     </div>
-                </article>
+                    <div class="col-md-10">
+
+                        <article class="postcard dark-card text-white py-1 px-4 m-2">
+                            <div class="postcard-text">
+                                <h1 class="display-6 postcard-header">@Model.ChosenMainCategory.Name </h1>
+                                <div class="postcard-bar"></div>
+                                @if ((Model.SubCategories.Where(s => s.MainCategoryId == Model.ChosenMainCategory.Id)).Any())
+                                {
+
+                                    @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == Model.ChosenMainCategory.Id))
+                                    {
+                                        <p class="lead"><a class="text-decoration-none text-warning" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="lead"><span class="small">Här kommer det snart spännande underkategorier..</span></p>
+                                }
+                            </div>
+                        </article>
+                    </div>
+                </div>
             </div>
         </section>
     }
@@ -338,7 +366,15 @@
                                         {
                                             var pt = Model.PostThreads.FirstOrDefault(p => p.Id == postthread.PTAnswerId);
                                             var ptwriter = Model.Users.FirstOrDefault(u => u.Id == pt.UserId);
-                                            <p class="bg-light text-muted">@ptwriter.UserName skrev: @pt.Text</p>
+                                            <div class="card w-50 p-2 mb-3 bg-secondary bg-opacity-50 text-white">
+
+
+                                                <span class="card-title">@ptwriter.UserName skrev: </span>
+                                                <span class="card-text">@pt.Text</span>
+                                            </div>
+
+
+
                                         }
 
                                         <p>@postthread.Text</p>

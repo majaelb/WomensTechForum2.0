@@ -139,7 +139,8 @@ namespace WomensTechForum2._0.Pages
             }
             if (unlikepostid != 0)
             {
-                LikePost likePost = await _context.LikePost.FirstOrDefaultAsync(p => p.PostId == unlikepostid);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                LikePost likePost = await _context.LikePost.FirstOrDefaultAsync(p => p.PostId == unlikepostid && p.UserId == userId);
 
                 if (likePost != null)
                 {
