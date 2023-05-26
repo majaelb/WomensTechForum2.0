@@ -134,9 +134,9 @@
                     <p>Inga inlägg ännu...</p>
                 }
 
+
             </div>
         </section>
-
     }
     else if (Model.ChosenPost != null)
     {
@@ -152,16 +152,17 @@
                 <div class="header-bar mx-auto"></div>
                 <h1 class="text-center text-warning display-5">@chosenmaincat.Name - @chosensubcat.Name</h1>
 
-                <article class="postcard bg-secondary bg-opacity-10 text-white py-1 px-4 m2">
+                <article class="postcard dark-card text-white py-1 px-4 m-2">
                     <div class="postcard-text w-100">
                         <h1 class="display-6 text-white">@Model.ChosenPost.Header</h1>
 
                         <div class="row w-100">
                             <div class="col-md-2">
                                 <div class="card bg-transparent border-0 user-block">
-                                    <div class="card-body text-center">
+                                    <div class="card-body p-0">
                                         <div class="row">
                                             <div class="col-4 col-md-12">
+
                                                 <img class="card-img img-fluid custom-image mb-4" src="~/img/@writer.ImageSrc">
                                             </div>
                                             <div class="col-8 col-md-12">
@@ -187,7 +188,7 @@
 
                         <div class="btn-container">
                             <br>
-            
+
 
                             @if (Model.CurrentUser != null && Model.CurrentUser.Gender != "Man") //Ändrat check av inloggad user från signinmanager
                             {
@@ -272,122 +273,162 @@
                             }
                             else if (Model.CurrentUser != null && Model.CurrentUser.Gender == "Man")
                             {
-                                <a href="#" class="btn btn-secondary" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-content="Du måste vara kvinna för att svara på inläggen" data-bs-trigger="focus">Svara</a>
+                                <a href="#" class="btn btn-warning btn-sm" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-content="Du måste vara kvinna för att svara på inläggen" data-bs-trigger="focus">Svara</a>
+                                @if (forumManager.CheckIfLiked(Model.ChosenPost.Id, Model.CurrentUser.Id))
+                                {
+                                    <a asp-route-unlikepostid="@Model.ChosenPost.Id"><i class="bi bi-heart-fill text-danger mx-1"></i></a>
+                                }
+                                else
+                                {
+                                    <a asp-route-likepostid="@Model.ChosenPost.Id"><i class="bi bi-heart text-danger mx-1"></i></a>
+                                }
+                                var count = @Model.LikedPosts.Where(p => p.PostId == Model.ChosenPost.Id).Count();
+                                <span class="small">@count</span>
                             }
                             else
-
                             {
-                                <a href="#" class="btn btn-secondary" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att svara på inläggen <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Svara</a>
-                                <a href="#" class="btn btn-outline-danger" title="Vill du anmäla inlägget?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att anmäla ett inlägg <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Anmäl inlägg</a>
+                                <a href="#" class="btn btn-warning btn-sm" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att svara på inläggen <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Svara</a>
                             }
                             @if (Model.CurrentUser != null && Model.CurrentUser.Id == Model.ChosenPost.UserId) //Ändrat till CurrentUser från user
                             {
-                                // <a asp-route-deleteid="@Model.ChosenPost.Id" class="btn btn-primary btn-sm">Ta bort</a>
                                 <a class="float-end mx-2" asp-route-deleteid="@Model.ChosenPost.Id" data-bs-tooltip="tooltip" title="Ta bort"><i class="bi bi-trash text-white"></i></a>
                             }
                         </div>
                     </div>
                 </article>
+
+                @*Post Threads*@
+                @{
+                    var chosenPostThreads = Model.PostThreads.Where(p => p.PostId == Model.ChosenPost.Id);
+                }
+                @if (chosenPostThreads != null && chosenPostThreads.Any())
+
+                {
+                    @foreach (var postthread in chosenPostThreads)
+                    {
+
+                        var ptWriter = Model.Users.Where(u => u.Id == postthread.UserId).FirstOrDefault();
+                        var originalWriterId = Model.Posts.FirstOrDefault(u => u.Id == postthread.PostId).UserId;
+                        var originalWriter = Model.Users.FirstOrDefault(u => u.Id == originalWriterId);
+                        var color = ptWriter.Id == originalWriter.Id ? "dark-card" : "bg-info bg-opacity-10";
+                        var postthreaddate = @postthread.Date.Value.ToString("dd") + " " + @postthread.Date.Value.ToString("Y") + " " + @postthread.Date.Value.ToString("t");
+
+                        <article class="postcard @color text-white py-1 px-4 m-2">
+                            <div class="postcard-text w-100">
+                                <div class="row w-100">
+                                    <div class="col-md-2">
+                                        <div class="card bg-transparent border-0">
+                                            <div class="card-body p-0">
+                                                <div class="row">
+                                                    <div class="col-4 col-md-12">
+                                                        <img class="card-img img-fluid custom-image mb-4" src="~/img/@ptWriter.ImageSrc">
+                                                    </div>
+                                                    <div class="col-8 col-md-12">
+                                                        <p class="mb-1">@ptWriter.FirstName @ptWriter.LastName</p>
+                                                        <p class="card-text small">@ptWriter.UserName</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <p><i class="bi bi-calendar3"></i> @postthreaddate</p>
+                                        <div class="header-bar"></div>
+                                        @if (postthread.PTAnswerId != null)
+                                        {
+                                            var pt = Model.PostThreads.FirstOrDefault(p => p.Id == postthread.PTAnswerId);
+                                            var ptwriter = Model.Users.FirstOrDefault(u => u.Id == pt.UserId);
+                                            <p class="bg-light text-muted">@ptwriter.UserName skrev: @pt.Text</p>
+                                        }
+
+                                        <p>@postthread.Text</p>
+                                        @if (postthread.ImageSrc != null && postthread.ImageSrc.Any())
+                                        {
+                                            <img class="post-image img-fluid" src="~/img/@postthread.ImageSrc" />
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="btn-container">
+                                    <br>
+
+                                    @if (Model.CurrentUser != null) //Ändrat check av inloggad user från signinmanager
+                                    {
+                                        @if (Model.CurrentUser.Gender != "Man")
+                                        {
+                                            <button class="btn btn-warning btn-sm" onclick="openPTForm(@postthread.Id)">Svara</button>
+
+                                            <a data-modal-postthread-id="@postthread.Id" class="float-end mx-2 text-white modal-PT-trigger report"><i class="bi bi-exclamation-diamond-fill text-danger" data-bs-toggle="tooltip" title="Anmäl"></i> </a>
+
+                                        }
+                                        else if (Model.CurrentUser != null && Model.CurrentUser.Gender == "Man")
+                                        {
+                                            <a href="#" class="btn btn-warning btn-sm" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-content="Du måste vara kvinna för att svara på inläggen" data-bs-trigger="focus">Svara</a>
+                                        }
+                                        @if (forumManager.CheckIfPTLiked(postthread.Id, Model.CurrentUser.Id))
+                                        {
+                                            <a asp-route-unlikePTid="@postthread.Id"><i class="bi bi-heart-fill text-danger mx-1"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-route-likePTid="@postthread.Id"><i class="bi bi-heart text-danger mx-1"></i></a>
+                                        }
+
+                                        var count = @Model.LikedPostThreads.Where(p => p.PostThreadId == postthread.Id).Count();
+                                        <span class="small">@count</span>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" class="btn btn-warning btn-sm" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att svara på inläggen <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Svara</a>
+                                    }
+
+                                    @if (Model.CurrentUser != null && Model.CurrentUser.Id == postthread.UserId)
+                                    {
+                                        <a class="float-end mx-2 mb-0" asp-route-deletePTid="@postthread.Id"><i class="bi bi-trash text-white " data-bs-toggle="tooltip" title="Ta bort"></i></a>
+                                    }
+
+                                    <div class="form-popup myPTForm-@postthread.Id">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <form method="post" enctype="multipart/form-data">
+                                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                                    <div class="form-group">
+                                                        <label asp-for="NewPostThread.Text" class="control-label"></label>
+                                                        <textarea asp-for="NewPostThread.Text" class="form-control" rows="5" cols="40"></textarea>
+                                                        <span asp-validation-for="NewPostThread.Text" class="text-danger"></span>
+                                                    </div>
+
+                                                    <label asp-for="NewPostThread.ImageSrc" class="control-label"></label>
+                                                    <input type="file" class="form-control" name="UploadedImage" />
+
+                                                    <br>
+                                                    <input asp-for="NewPostThread.PostId" type="hidden" value="@Model.ChosenPost.Id" />
+                                                    <input asp-for="NewPostThread.PTAnswerId" type="hidden" value="@postthread.Id" />
+                                                    <div class="form-group">
+                                                        <input type="submit" asp-page-handler="NewPostThread" value="Svara" class="btn btn-warning btn-sm" />
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="closePTForm(@postthread.Id)">Stäng</button>
+                                                    </div>
+
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    }
+                }
+                else
+                {
+
+                    <p class="text-white">Inga svar ännu...</p>
+                }
+
             </div>
 
         </section>
-        @*Post Threads*@
-        var chosenPostThreads = Model.PostThreads.Where(p => p.PostId == Model.ChosenPost.Id);
-        if (chosenPostThreads != null && chosenPostThreads.Any())
-        {
-            @foreach (var postthread in chosenPostThreads)
-            {
-
-                var ptWriter = Model.Users.Where(u => u.Id == postthread.UserId).FirstOrDefault();
-                var originalWriterId = Model.Posts.FirstOrDefault(u => u.Id == postthread.PostId).UserId;
-                var originalWriter = Model.Users.FirstOrDefault(u => u.Id == originalWriterId);
-                var color = ptWriter.Id == originalWriter.Id ? "bg-info bg-opacity-10" : "";
-
-                <hr />
-                <div class="@color">
-                    <p>Skrevs @postthread.Date.Value.ToString("f") av @Model.Users.FirstOrDefault(u => u.Id == @postthread.UserId).UserName</p> @*Ändrat från users*@
-                    <img class="rounded-3" src="~/img/@ptWriter.ImageSrc" height="50">
-                    @if (postthread.PTAnswerId != null)
-                    {
-                        var pt = Model.PostThreads.FirstOrDefault(p => p.Id == postthread.PTAnswerId);
-                        var ptwriter = Model.Users.FirstOrDefault(u => u.Id == pt.UserId);
-                        <p class="bg-light text-muted">@ptwriter.UserName skrev: @pt.Text</p>
-                    }
-
-                    <p>@postthread.Text</p>
-                    @if (postthread.ImageSrc != null && postthread.ImageSrc.Any())
-                    {
-                        <img src="~/img/@postthread.ImageSrc" height="250" />
-                    }
-                    <br />
-                    @if (Model.CurrentUser != null && Model.CurrentUser.Id == postthread.UserId) //ändrat från user
-                    {
-                        <a asp-route-deletePTid="@postthread.Id"><i class="bi bi-trash text-white"></i></a>
-                    }
-                    @if (Model.CurrentUser != null) //Ändrat check av inloggad user från signinmanager
-                    {
-                        @if (Model.CurrentUser.Gender != "Man")
-                        {
-                            <button class="btn btn-secondary" onclick="openPTForm(@postthread.Id)">Svara</button>
-
-                            <a data-modal-postthread-id="@postthread.Id" class="text-white p-1 modal-PT-trigger report"> <i class="bi bi-exclamation-diamond-fill text-danger"></i> </a>
-                        }
-                        @if (forumManager.CheckIfPTLiked(postthread.Id, Model.CurrentUser.Id))
-                        {
-                            <a asp-route-unlikePTid="@postthread.Id"><i class="bi bi-heart-fill text-danger mx-1"></i></a>
-                        }
-                        else
-                        {
-                            <a asp-route-likePTid="@postthread.Id"><i class="bi bi-heart text-danger mx-1"></i></a>
-                        }
-
-                        var count = @Model.LikedPostThreads.Where(p => p.PostThreadId == postthread.Id).Count();
-                        <span>Likes: @count</span>
-                    }
-                    else
-                    {
-                        <a href="#" class="btn btn-secondary" title="Vill du delta i tråden?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att svara på inläggen <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Svara</a>
-                        <a href="#" class="btn btn-outline-danger" title="Vill du anmäla inlägget?" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="Logga in för att anmäla ett inlägg <hr><a href='https://localhost:44316/Identity/Account/Login' class='btn btn-primary'>Logga in</a>">Anmäl inlägg</a>
-                    }
-
-                    <div class="form-popup myPTForm-@postthread.Id">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <form method="post" enctype="multipart/form-data">
-                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                                    <div class="form-group">
-                                        <label asp-for="NewPostThread.Text" class="control-label"></label>
-                                        <textarea asp-for="NewPostThread.Text" class="form-control" rows="5" cols="40"></textarea>
-                                        <span asp-validation-for="NewPostThread.Text" class="text-danger"></span>
-                                    </div>
-
-                                    <label asp-for="NewPostThread.ImageSrc" class="control-label"></label>
-                                    <input type="file" class="form-control" name="UploadedImage" />
-
-                                    <br>
-                                    <input asp-for="NewPostThread.PostId" type="hidden" value="@Model.ChosenPost.Id" />
-                                    <input asp-for="NewPostThread.PTAnswerId" type="hidden" value="@postthread.Id" />
-                                    <div class="form-group">
-                                        <input type="submit" asp-page-handler="NewPostThread" value="Svara" class="btn btn-success" />
-                                        <button type="button" class="btn btn-warning" onclick="closePTForm(@postthread.Id)">Stäng</button>
-                                    </div>
-
-
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            }
-        }
-        else
-        {
-            <hr />
-            <p>Inga svar ännu...</p>
-        }
-
     }
 
     else

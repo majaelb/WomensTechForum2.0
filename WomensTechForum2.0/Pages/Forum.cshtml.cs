@@ -167,7 +167,7 @@ namespace WomensTechForum2._0.Pages
             }
             if (unlikePTid != 0)
             {
-
+                //Kolla att Usern som är inloggad är samma som usern i likepostthread!
                 LikePostThread likePostThread = await _context.LikePostThread.FirstOrDefaultAsync(p => p.PostThreadId == unlikePTid);
 
                 if (likePostThread != null)
