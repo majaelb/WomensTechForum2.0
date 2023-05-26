@@ -157,26 +157,34 @@
                         <h1 class="display-6 text-white">@Model.ChosenPost.Header</h1>
 
                         <div class="row">
-                            <div class="col-sm-3">
-                                <div class="card bg-secondary bg-opacity-10">
+                            <div class="col-md-3">
+                                <div class="card bg-transparent border-0 user-block">
                                     <div class="card-body text-center">
-                                        <img class="card-img w-50" src="~/img/@writer.ImageSrc">
-                                        <p class="card-title mb-3"> @writer.FirstName @writer.LastName</p>
-                                        <p class="card-text"> @writer.UserName</p>
+                                        <div class="row">
+                                            <div class="col-4 col-md-12">
+                                                <img class="card-img img-fluid custom-image mb-4" src="~/img/@writer.ImageSrc">
+                                            </div>
+                                            <div class="col-8 col-md-12">
+                                                <p class=" mb-1">@writer.FirstName @writer.LastName</p>
+                                                <p class="card-text small">@writer.UserName</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-9">
+                            <div class="col-md-9">
                                 <p><i class="bi bi-calendar3"></i> @postdate</p>
                                 <div class="header-bar"></div>
                                 <p>@Model.ChosenPost.Text</p>
 
                                 @if (Model.ChosenPost.ImageSrc != null && Model.ChosenPost.ImageSrc.Any())
                                 {
-                                    <img class="post-image" src="~/img/@Model.ChosenPost.ImageSrc" />
+                                    <img class="post-image img-fluid" src="~/img/@Model.ChosenPost.ImageSrc" />
                                 }
                             </div>
                         </div>
+
+
                         <div class="btn-container">
                             <br>
                             @if (Model.CurrentUser != null && Model.CurrentUser.Id == Model.ChosenPost.UserId) //Ändrat till CurrentUser från user

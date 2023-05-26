@@ -113,9 +113,16 @@ html {
 }
 
 .post-image{
-    width: 100%;
+    width: 70%;
 }
 
-/*.card-column{
-    padding-left:20px;
-}*/
+@media(min-width:960px){
+    .post-image{
+        width:50%;
+    }
+}
+
+  .custom-image{
+      width:70px;
+      height:auto;
+  }
