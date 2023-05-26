@@ -4,16 +4,16 @@
     //Areas.Identity.Data.WomensTechForum2_0User messagesender = null;
 }
 
-
+<div class="container py-2">
 
 @if (Model.CurrentUser != null)
 {
-    <button class="btn btn-secondary btn-lg my-2" data-bs-toggle="modal" data-bs-target="#message">
+    <button class="btn btn-warning my-2" data-bs-toggle="modal" data-bs-target="#message">
         <i class="bi-plus larger-plusicon"> </i>
         Nytt meddelande
     </button>
 
-    <h1>Dina meddelanden</h1>
+    <h1 class="display-5">Dina meddelanden</h1>
     if (Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id) != null && Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id).Any())
     {
         if (Model.ChosenMessage != null)
@@ -107,7 +107,7 @@
                             {
                                 <td class="fw-bold">@mess.DateTime.Value.ToString("dd") @mess.DateTime.Value.ToString("MMMM")</td>
                             }
-                            <td><a asp-route-deleteId="@mess.Id"><i class="bi bi-trash"></i></a></td>
+                                <td><a class="text-black" asp-route-deleteId="@mess.Id"><i class="bi bi-trash" data-bs-toggle="tooltip" title="Ta bort"></i></a></td>
                         </tr>
                     }
                     else
@@ -118,15 +118,14 @@
 
                             @if (mess.DateTime.Value.Date == DateTime.Now.Date)
                             {
-
                                 <td>@mess.DateTime.Value.ToString("t")</td>
                             }
                             else
                             {
                                 <td>@mess.DateTime.Value.ToString("dd") @mess.DateTime.Value.ToString("MMMM")</td>
                             }
-                            <td><a asp-route-deleteId="@mess.Id"><i class="bi bi-trash"></i></a></td>
-                        </tr>
+                                <td><a class="text-black" asp-route-deleteId="@mess.Id"><i class="bi bi-trash" data-bs-toggle="tooltip" title="Ta bort"></i></a></td>
+                            </tr>
                     }
                 }
             </table>
@@ -140,6 +139,7 @@
 
    
 }
+</div>
 <!--MODAL new message-->
 <div class="modal fade" id="message" tabindex="-1" aria-labelledby="messageLabel" aria-hidden="true">
     <div class="modal-dialog">
