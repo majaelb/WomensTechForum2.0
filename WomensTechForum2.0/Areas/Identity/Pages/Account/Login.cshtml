@@ -4,56 +4,6 @@
 @{
     ViewData["Title"] = "Logga in";
 }
-@*  <section class="bg-dark">
-         
-                <div class="row">
-                    <div class="col-md-2 text-center text-white">
-                        <article class="menucard dark-card text-white hide-on-small-screen">
-                            @foreach (var cat in Model.MainCategories)
-                            {
-                                <div class="postcard-text p-2">
-                                    <a class="text-decoration-none" asp-route-chosenMainId="@cat.Id"><h4 class="postcard-header font-weight-lighter text-warning">@cat.Name </h4></a>
-                                    <div class="postcard-bar m-auto"></div>
-                                    @if ((Model.SubCategories.Where(s => s.MainCategoryId == cat.Id)).Any())
-                                    {
-
-                                        @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == cat.Id))
-                                        {
-                                            <p class="lead "><a class="text-decoration-none subcatlink" asp-route-chosenSubId="@sub.Id">@sub.Name</a></p>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <p class="lead"><span class="small">Kommer snart...</span></p>
-                                    }
-                                </div>
-                            }
-                        </article>
-                    </div>
-                    <div class="col-md-10">
-
-                        <article class="postcard dark-card text-white py-1 px-4 m-2">
-                            <div class="postcard-text">
-                                <h1 class="display-6 postcard-header">@Model.ChosenMainCategory.Name </h1>
-                                <div class="postcard-bar"></div>
-                                @if ((Model.SubCategories.Where(s => s.MainCategoryId == Model.ChosenMainCategory.Id)).Any())
-                                {
-
-                                    @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == Model.ChosenMainCategory.Id))
-                                    {
-                                        <p class="lead"><a class="text-decoration-none text-warning" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
-                                    }
-                                }
-                                else
-                                {
-                                    <p class="lead"><span class="small">Här kommer det snart spännande underkategorier..</span></p>
-                                }
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </section>*@
 <section class="bg-dark">
     <div class="row">
         <div class="col-md-3">
@@ -87,7 +37,7 @@
                     @*  <p>
                     <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
                     </p>*@
-                    <p>
+                    <p class="mt-2">
                         <a class="text-decoration-none register-link" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrera dig</a>
                     </p>
                     @* <p>
