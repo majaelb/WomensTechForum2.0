@@ -2,25 +2,76 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Logga in";
 }
+@*  <section class="bg-dark">
+         
+                <div class="row">
+                    <div class="col-md-2 text-center text-white">
+                        <article class="menucard dark-card text-white hide-on-small-screen">
+                            @foreach (var cat in Model.MainCategories)
+                            {
+                                <div class="postcard-text p-2">
+                                    <a class="text-decoration-none" asp-route-chosenMainId="@cat.Id"><h4 class="postcard-header font-weight-lighter text-warning">@cat.Name </h4></a>
+                                    <div class="postcard-bar m-auto"></div>
+                                    @if ((Model.SubCategories.Where(s => s.MainCategoryId == cat.Id)).Any())
+                                    {
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
+                                        @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == cat.Id))
+                                        {
+                                            <p class="lead "><a class="text-decoration-none subcatlink" asp-route-chosenSubId="@sub.Id">@sub.Name</a></p>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p class="lead"><span class="small">Kommer snart...</span></p>
+                                    }
+                                </div>
+                            }
+                        </article>
+                    </div>
+                    <div class="col-md-10">
+
+                        <article class="postcard dark-card text-white py-1 px-4 m-2">
+                            <div class="postcard-text">
+                                <h1 class="display-6 postcard-header">@Model.ChosenMainCategory.Name </h1>
+                                <div class="postcard-bar"></div>
+                                @if ((Model.SubCategories.Where(s => s.MainCategoryId == Model.ChosenMainCategory.Id)).Any())
+                                {
+
+                                    @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == Model.ChosenMainCategory.Id))
+                                    {
+                                        <p class="lead"><a class="text-decoration-none text-warning" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="lead"><span class="small">Här kommer det snart spännande underkategorier..</span></p>
+                                }
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>*@
+<section class="bg-dark">
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6 text-white">
+            <h1 class="text-warning">@ViewData["Title"]</h1>
             <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
+                <h2 class="text-warning">Använd ditt användarkonto</h2>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">
                     <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
+                    <label asp-for="Input.Email" class="form-label text-dark">Email</label>
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
                     <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
+                    <label asp-for="Input.Password" class="form-label text-dark">Lösenord</label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="checkbox mb-3">
@@ -30,54 +81,58 @@
                     </label>
                 </div>
                 <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-warning">Logga in</button>
                 </div>
                 <div>
+                    @*  <p>
+                    <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                    </p>*@
                     <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                        <a class="text-decoration-none register-link" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrera dig</a>
                     </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
+                    @* <p>
+                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                    </p>*@
                 </div>
             </form>
-        </section>
+        </div>
+        <div class="col-md-3"></div>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
+</section>
+@*<div class="col-md-6 col-md-offset-2">
+    <section>
+    <h3>Use another service to log in.</h3>
+    <hr />
+    @{
+    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+    {
+    <div>
+    <p>
+    There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+    article
+    about setting up this ASP.NET application to support logging in via external services
+    </a>.
+    </p>
     </div>
-</div>
+    }
+    else
+    {
+    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+    <div>
+    <p>
+    @foreach (var provider in Model.ExternalLogins!)
+    {
+    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+    }
+    </p>
+    </div>
+    </form>
+    }
+    }
+    </section>
+    </div>*@
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-}
+    }

@@ -21,7 +21,12 @@ html {
     margin-bottom: 60px;
 
 }*/
-
+.register-link{
+    color:white;
+}
+.register-link:hover {
+    color: #ffc107;
+}
 .form-popup {
     display: none;
 }
