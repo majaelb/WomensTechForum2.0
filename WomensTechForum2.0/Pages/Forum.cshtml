@@ -32,6 +32,7 @@
 
                                         @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == cat.Id))
                                         {
+                                           
                                             <p class="lead "><a class="text-decoration-none subcatlink" asp-route-chosenSubId="@sub.Id">@sub.Name</a></p>
                                         }
                                     }
@@ -54,7 +55,10 @@
 
                                     @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == Model.ChosenMainCategory.Id))
                                     {
-                                        <p class="lead"><a class="text-decoration-none text-warning" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
+                                        var postsInSub = @Model.Posts.Where(p => p.SubCategoryId == sub.Id);
+                                        var postsText = postsInSub.Count() == 1 ? "tråd" : "trådar";
+
+                                        <p class="lead"><a class="text-decoration-none text-warning" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description  <span class="small text-muted"> | @postsInSub.Count() @postsText</span></span></p>
                                     }
                                 }
                                 else
@@ -73,7 +77,7 @@
 
         var chosenmaincat = Model.MainCategories.FirstOrDefault(c => c.Id == Model.ChosenSubCategory.MainCategoryId);
 
-        <section class="bg-dark min-vh-100">
+            <section class="bg-dark min-vh-100">
 
             <div class="p-2">
 
@@ -164,6 +168,7 @@
                         {
                             @foreach (var post in chosenPosts)
                             {
+                                var postThreadssInSub = @Model.PostThreads.Where(p => p.PostId == post.Id);
                                 <article class="postcard dark-card text-white py-1 px-4 m-2">
 
                                     <div class="postcard-text">
@@ -176,7 +181,7 @@
                                         <div class="postcard-bar"></div>
 
                                         <p class="lead"><span class="small">@post.Text.LimitLength(300)</span></p>
-
+                                        <p class="small text-muted">@postThreadssInSub.Count() svar</p>
                                     </div>
 
                                 </article>
@@ -535,7 +540,9 @@
 
                                 @foreach (var sub in Model.SubCategories.Where(s => s.MainCategoryId == cat.Id))
                                 {
-                                    <p class="lead"><a class="text-decoration-none text-warning" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description</span></p>
+                                    var postsInSub = @Model.Posts.Where(p => p.SubCategoryId == sub.Id);
+                                    var postsText = postsInSub.Count() == 1 ? "tråd" : "trådar";
+                                    <p class="lead"><a class="text-decoration-none text-warning" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description | <span class="text-muted">@postsInSub.Count() @postsText</span></span></p>
                                 }
                             }
                             else
