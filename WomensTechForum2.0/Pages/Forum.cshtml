@@ -384,12 +384,14 @@
                         @*Post Threads*@
                         @{
                             var chosenPostThreads = Model.PostThreads.Where(p => p.PostId == Model.ChosenPost.Id);
+                            var index = 0;
                         }
                         @if (chosenPostThreads != null && chosenPostThreads.Any())
 
                         {
                             @foreach (var postthread in chosenPostThreads)
                             {
+                                index++;
 
                                 var ptWriter = Model.Users.Where(u => u.Id == postthread.UserId).FirstOrDefault();
                                 var originalWriterId = Model.Posts.FirstOrDefault(u => u.Id == postthread.PostId).UserId;
@@ -465,6 +467,18 @@
                                                 {
                                                     <a asp-route-likePTid="@postthread.Id"><i class="bi bi-heart text-danger mx-1"></i></a>
                                                 }
+
+                                                @*if (forumManager.CheckIfPTLiked(postthread.Id, Model.CurrentUser.Id))
+                                                {
+                                                    <a class="unlike-button" data-ptid="@postthread.Id" data-index="@index" onclick="unlikePostThread(event)"><i class="bi bi-heart-fill text-danger mx-1"></i></a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="like-button" data-ptid="@postthread.Id" data-index="@index" onclick="likePostThread(event)"><i class="bi bi-heart text-danger mx-1"></i></a>
+                                                }*@
+
+
+
 
                                                 var count = @Model.LikedPostThreads.Where(p => p.PostThreadId == postthread.Id).Count();
                                                 <span class="small">@count</span>

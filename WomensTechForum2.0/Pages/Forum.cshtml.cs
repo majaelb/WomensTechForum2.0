@@ -198,6 +198,41 @@ namespace WomensTechForum2._0.Pages
                 return Redirect(url);
 
             }
+
+            //if (likePTid != 0)
+            //{
+            //    var likePostThread = new LikePostThread()
+            //    {
+            //        PostThreadId = likePTid,
+            //        UserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+            //    };
+
+            //    _context.LikePostThread.Add(likePostThread);
+            //    await _context.SaveChangesAsync();
+
+            //    return new JsonResult(new { success = true, message = "Inlägget gillades." });
+            //}
+
+            //if (unlikePTid != 0)
+            //{
+            //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //    LikePostThread likePostThread = await _context.LikePostThread.FirstOrDefaultAsync(p => p.PostThreadId == unlikePTid && p.UserId == userId);
+
+            //    if (likePostThread != null)
+            //    {
+            //        _context.LikePostThread.Remove(likePostThread);
+            //        await _context.SaveChangesAsync();
+
+            //        return new JsonResult(new { success = true, message = "Inlägget ogillades." });
+            //    }
+            //}
+
+            // Om ingen åtgärd utfördes eller om det uppstod ett fel
+            //return new JsonResult(new { success = false, message = "Ett fel uppstod." });
+
+
+
+
             return Page();
         }
 
@@ -205,7 +240,7 @@ namespace WomensTechForum2._0.Pages
         {
             string fileName = string.Empty;
 
-            if(string.IsNullOrEmpty(NewPost.Header))
+            if (string.IsNullOrEmpty(NewPost.Header))
             {
                 ModelState.AddModelError("NewPost.Header", "Du måste ange en rubrik");
             }

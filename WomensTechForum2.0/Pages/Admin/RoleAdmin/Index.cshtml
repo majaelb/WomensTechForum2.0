@@ -3,7 +3,7 @@
 @{
 }
 
-
+<div class="container py-2">
 <h1>Roller</h1>
 
 <div>
@@ -12,7 +12,7 @@
     {
         @foreach (var role in Model.Roles)
         {
-            <p>@role.Name</p>
+            <p>- @role.Name</p>
         }
     }
 
@@ -20,12 +20,13 @@
         <form method="post">
             <label for="RoleName">Ny roll</label>
             <input name="RoleName" id="RoleName" />
-            <input type="submit" value="Skapa ny roll">
+            <input class="btn btn-success btn-sm" type="submit" value="Skapa ny roll">
         </form>
     </div>
 </div>
 
 <div>
+    <hr />
     <h3>Befintliga användare:</h3>
     @if (Model.Users != null && Model.Users.Any())
     {
@@ -91,3 +92,4 @@
     }
 </div>
 
+</div>

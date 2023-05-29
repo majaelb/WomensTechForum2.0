@@ -3,10 +3,11 @@
 @{
 }
 
+<div class="container py-2">
 <h1>Anmälda inlägg</h1>
 
 <h2>Anmälda original-inlägg</h2>
-<table class="table table-striped table-hover">
+<table class="table table-striped table-hover ">
     <tr>
         <th>Användare</th>
         <th>Datum</th>
@@ -27,16 +28,16 @@
             <td>@post.NoOfReports</td>
             @if (post.ImageSrc != null && post.ImageSrc.Any())
             {
-                <td><img src="~/img/@post.ImageSrc" height="50" /></td>
+                <td><img src="~/img/@post.ImageSrc" class="img-fluid" /></td>
             }
             else
             {
                 <td> </td>
             }
             <td>
-                <a asp-route-changeId="@post.Id">Markera som ej stötande</a>
+                <a class="btn btn-primary btn-sm" asp-route-changeId="@post.Id">Markera som ej stötande</a>
             </td>
-            <td><a asp-route-deleteId="@post.Id">Stötande inlägg - Radera</a></td>
+            <td><a class="btn btn-danger btn-sm" asp-route-deleteId="@post.Id">Stötande inlägg - Radera</a></td>
         </tr>
 
         @*
@@ -46,7 +47,7 @@
 
 </table>
 <h2>Anmälda kommentars-inlägg</h2>
-<table class="table table-striped table-hover">
+<table class="table table-striped table-hover ">
     <tr>
         <th>Användare</th>
         <th>Datum</th>
@@ -65,15 +66,16 @@
             <td>@post.NoOfReports</td>
             @if (post.ImageSrc != null && post.ImageSrc.Any())
             {
-                <td><img src="~/img/@post.ImageSrc" height="50" /></td>
+                <td><img src="~/img/@post.ImageSrc" class="img-fluid" /></td>
             }
             else
             {
                 <td> </td>
             }
-            <td><a asp-route-changePTId="@post.Id">Markera som ej stötande</a></td>
-            <td><a asp-route-deletePTId="@post.Id">Stötande inlägg - Radera</a></td>
+            <td><a class="btn btn-primary btn-sm" asp-route-changePTId="@post.Id">Markera som ej stötande</a></td>
+            <td><a class="btn-danger btn-sm" asp-route-deletePTId="@post.Id">Stötande inlägg - Radera</a></td>
         </tr>
     }
 
 </table>
+</div>

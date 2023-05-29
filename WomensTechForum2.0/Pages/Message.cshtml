@@ -6,78 +6,85 @@
 
 <div class="container py-2">
 
-@if (Model.CurrentUser != null)
-{
-    <button class="btn btn-warning my-2" data-bs-toggle="modal" data-bs-target="#message">
-        <i class="bi-plus larger-plusicon"> </i>
-        Nytt meddelande
-    </button>
-
-    <h1 class="display-5">Dina meddelanden</h1>
-    if (Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id) != null && Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id).Any())
+    @if (Model.CurrentUser != null)
     {
+        <button class="btn btn-warning my-2" data-bs-toggle="modal" data-bs-target="#message">
+            <i class="bi-pen-fill"> </i>
+            Nytt meddelande
+        </button>
         if (Model.ChosenMessage != null)
         {
-            var messagesender = Model.Users.FirstOrDefault(u => u.Id == @Model.ChosenMessage.SenderId);
+            <a asp-page="/Message" class="btn btn-secondary my-2">
+                Inkorgen
+            </a>
+        }
 
-            <p class="lead">
-                @Model.ChosenMessage.Title
-            </p>
-            <a class="pe-auto" href="#" data-bs-toggle="modal" data-bs-target="#answermessage" data-bs-toggle="tooltip" title="Svara"><i class="bi bi-arrow-90deg-left"></i>Svara</a>
-    
-                <a asp-route-deleteId="@Model.ChosenMessage.Id" data-bs-toggle="tooltip" title="Radera"><i class="bi bi-trash"></i></a>
+        <h1 class="display-5">Dina meddelanden</h1>
+        if (Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id) != null && Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id).Any())
+        {
+            if (Model.ChosenMessage != null)
+            {
+                var messagesender = Model.Users.FirstOrDefault(u => u.Id == @Model.ChosenMessage.SenderId);
 
-            <p>Skickades @Model.ChosenMessage.DateTime.Value.ToString("f") från @messagesender.FirstName @messagesender.LastName </p>
-            <p>@Model.ChosenMessage.TextMessage</p>
+                <p class="lead">
+                    @Model.ChosenMessage.Title
+                </p>
+                <a class="pe-auto btn btn-warning btn-sm" href="#" data-bs-toggle="modal" data-bs-target="#answermessage"><i data-bs-toggle="tooltip" title="Svara" class="bi bi-pen-fill"></i> Svara</a>
 
+                <span>&nbsp;</span>
+                <a asp-route-deleteId="@Model.ChosenMessage.Id"><i data-bs-toggle="tooltip" title="Radera" class="bi bi-trash text-black"></i></a>
 
-            <!--MODAL answer message-->
-            <div class="modal fade" id="answermessage" tabindex="-1" aria-labelledby="answermessageLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="answermessageLabel">Svara @messagesender.FirstName @messagesender.LastName</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form method="post">
-                                @*<div class="form-group mb-3">
-                                    <label asp-for="NewMessage.ReceiverId" class="control-label">Mottagare</label>
-                                    <select asp-for="NewMessage.ReceiverId" class="form-control" asp-items="ViewBag.ReceiverId"></select>
-                                </div>*@
-                                <div class="form-group mb-3">
-                                    <input asp-for="NewMessage.Title" type="hidden" value="[RE] @Model.ChosenMessage.Title" />
-                                    <label class="form-label" asp-for="NewMessage.Title"></label>
-                                    <p text-muted>[RE] @Model.ChosenMessage.Title</p>
-                                  @*  <label class="form-label" asp-for="NewMessage.Title"></label>
-                                    <br>
-                                    <input class="form-control" asp-for="NewMessage.Title" />
-                                    <span asp-validation-for="NewMessage.Title" class="text-danger"></span>*@
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label class="bg-light text-muted">Tidigare meddelande:</label>
-                                    <p class="bg-light text-muted">@Model.ChosenMessage.TextMessage</p>
-                                    <label class="form-label" asp-for="NewMessage.TextMessage">Meddelande</label>
-                                    <br>
-                                    <textarea class="form-control" asp-for="NewMessage.TextMessage"> </textarea>
-                                    <span asp-validation-for="NewMessage.TextMessage" class="text-danger"></span>
-                                </div>
-                                <input asp-for="NewMessage.ReceiverId" type="hidden" value="@messagesender.Id" />
-
-                                <input asp-for="NewMessage.SenderId" type="hidden" value="@Model.CurrentUser.Id" />
+                <p>Skickades @Model.ChosenMessage.DateTime.Value.ToString("f") från @messagesender.FirstName @messagesender.LastName </p>
+                <p>@Model.ChosenMessage.TextMessage</p>
 
 
+                <!--MODAL answer message-->
+                <div class="modal fade" id="answermessage" tabindex="-1" aria-labelledby="answermessageLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="answermessageLabel">Svara @messagesender.FirstName @messagesender.LastName</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post">
+                                    @*<div class="form-group mb-3">
+                        <label asp-for="NewMessage.ReceiverId" class="control-label">Mottagare</label>
+                        <select asp-for="NewMessage.ReceiverId" class="form-control" asp-items="ViewBag.ReceiverId"></select>
+                        </div>*@
+                                    <div class="form-group mb-3">
+                                        <input asp-for="NewMessage.Title" type="hidden" value="[RE] @Model.ChosenMessage.Title" />
+                                        <label class="form-label" asp-for="NewMessage.Title"></label>
+                                        <p text-muted>[RE] @Model.ChosenMessage.Title</p>
+                                        @*  <label class="form-label" asp-for="NewMessage.Title"></label>
+                            <br>
+                            <input class="form-control" asp-for="NewMessage.Title" />
+                            <span asp-validation-for="NewMessage.Title" class="text-danger"></span>*@
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="bg-light text-muted">Tidigare meddelande:</label>
+                                        <p class="bg-light text-muted">@Model.ChosenMessage.TextMessage</p>
+                                        <label class="form-label" asp-for="NewMessage.TextMessage">Meddelande</label>
+                                        <br>
+                                        <textarea class="form-control" asp-for="NewMessage.TextMessage"> </textarea>
+                                        <span asp-validation-for="NewMessage.TextMessage" class="text-danger"></span>
+                                    </div>
+                                    <input asp-for="NewMessage.ReceiverId" type="hidden" value="@messagesender.Id" />
+
+                                    <input asp-for="NewMessage.SenderId" type="hidden" value="@Model.CurrentUser.Id" />
 
 
-                                <div class="modal-footer">
-                                    <input class="btn btn-secondary" type="submit" value="Skicka" data-bs-dismiss="modal" />
-                                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Stäng</button>
-                                </div>
-                            </form>
+
+
+                                    <div class="modal-footer">
+                                        <input class="btn btn-secondary" type="submit" value="Skicka" data-bs-dismiss="modal" />
+                                        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Stäng</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
 
 
@@ -85,60 +92,60 @@
 
 
 
+            }
+            else
+            {
+                <table class="table table-hover">
+                    @foreach (var mess in Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id).OrderByDescending(m => m.DateTime))
+                    {
+                        var sender = Model.Users.FirstOrDefault(u => u.Id == @mess.SenderId);
+                        @if (mess.IsRead == false)
+                        {
+                            <tr>
+                                <td class="fw-bold">@sender.FirstName @sender.LastName</td>
+                                <td class="fw-bold"><a asp-route-chosenMessageId="@mess.Id" class="lead text-black fw-bold text-decoration-none">@mess.Title</a></td>
+
+                                @if (mess.DateTime.Value.Date == DateTime.Now.Date)
+                                {
+
+                                    <td class="fw-bold">@mess.DateTime.Value.ToString("t")</td>
+                                }
+                                else
+                                {
+                                    <td class="fw-bold">@mess.DateTime.Value.ToString("dd") @mess.DateTime.Value.ToString("MMMM")</td>
+                                }
+                                <td><a class="text-black" asp-route-deleteId="@mess.Id"><i class="bi bi-trash" data-bs-toggle="tooltip" title="Ta bort"></i></a></td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>@sender.FirstName @sender.LastName</td>
+                                <td><a asp-route-chosenMessageId="@mess.Id" class="lead text-decoration-none text-black">@mess.Title</a></td>
+
+                                @if (mess.DateTime.Value.Date == DateTime.Now.Date)
+                                {
+                                    <td>@mess.DateTime.Value.ToString("t")</td>
+                                }
+                                else
+                                {
+                                    <td>@mess.DateTime.Value.ToString("dd") @mess.DateTime.Value.ToString("MMMM")</td>
+                                }
+                                <td><a class="text-black" asp-route-deleteId="@mess.Id"><i class="bi bi-trash" data-bs-toggle="tooltip" title="Ta bort"></i></a></td>
+                            </tr>
+                        }
+                    }
+                </table>
+            }
         }
         else
         {
-            <table class="table table-hover">
-                @foreach (var mess in Model.Messages.Where(m => m.ReceiverId == Model.CurrentUser.Id).OrderByDescending(m => m.DateTime))
-                {
-                    var sender = Model.Users.FirstOrDefault(u => u.Id == @mess.SenderId);
-                    @if (mess.IsRead == false)
-                    {
-                        <tr>
-                            <td class="fw-bold">@sender.FirstName @sender.LastName</td>
-                            <td class="fw-bold"><a asp-route-chosenMessageId="@mess.Id" class="lead text-black fw-bold text-decoration-none">@mess.Title</a></td>
-
-                            @if (mess.DateTime.Value.Date == DateTime.Now.Date)
-                            {
-
-                                <td class="fw-bold">@mess.DateTime.Value.ToString("t")</td>
-                            }
-                            else
-                            {
-                                <td class="fw-bold">@mess.DateTime.Value.ToString("dd") @mess.DateTime.Value.ToString("MMMM")</td>
-                            }
-                                <td><a class="text-black" asp-route-deleteId="@mess.Id"><i class="bi bi-trash" data-bs-toggle="tooltip" title="Ta bort"></i></a></td>
-                        </tr>
-                    }
-                    else
-                    {
-                        <tr>
-                            <td>@sender.FirstName @sender.LastName</td>
-                            <td><a asp-route-chosenMessageId="@mess.Id" class="lead text-decoration-none text-black">@mess.Title</a></td>
-
-                            @if (mess.DateTime.Value.Date == DateTime.Now.Date)
-                            {
-                                <td>@mess.DateTime.Value.ToString("t")</td>
-                            }
-                            else
-                            {
-                                <td>@mess.DateTime.Value.ToString("dd") @mess.DateTime.Value.ToString("MMMM")</td>
-                            }
-                                <td><a class="text-black" asp-route-deleteId="@mess.Id"><i class="bi bi-trash" data-bs-toggle="tooltip" title="Ta bort"></i></a></td>
-                            </tr>
-                    }
-                }
-            </table>
+            <p>Inga meddelanden...</p>
         }
-    }
-    else
-    {
-        <p>Inga meddelanden...</p>
-    }
 
 
-   
-}
+
+    }
 </div>
 <!--MODAL new message-->
 <div class="modal fade" id="message" tabindex="-1" aria-labelledby="messageLabel" aria-hidden="true">
