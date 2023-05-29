@@ -4,47 +4,6 @@
     ViewData["Title"] = "Registrera dig";
 }
 
-@*<section class="bg-dark min-vh-100 pt-3">
-    <div class="row">
-        <div class="col-md-3">
-        </div>
-        <div class="col-md-6 text-white">
-            <h1 class="text-warning">@ViewData["Title"]</h1>
-            <form id="account" method="post">
-                <h2 class="text-warning">Använd ditt användarkonto</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label text-dark">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label text-dark">Lösenord</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-warning">Logga in</button>
-                </div>
-                <div>
-                    <p class="mt-2">
-                        <a class="text-decoration-none register-link" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrera dig</a>
-                    </p>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-3"></div>
-    </div>
-</section>*@
-
-
 <section class="bg-dark px-5 min-vh-100 pt-3">
     <h1 class="text-warning">@ViewData["Title"]</h1>
 
@@ -79,7 +38,7 @@
                 
                 <div class="form-floating mb-3">
                     @*<label asp-for="Input.ImageSrc" class="control-label"></label>*@
-                    <p class="text-white mb-1">Bild</p>
+                    <p class="text-white mb-1">Profilbild</p>
                     <input type="file" class="form-control" name="UploadedImage"/>
                 </div>
 

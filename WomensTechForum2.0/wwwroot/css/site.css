@@ -17,10 +17,6 @@ html {
     min-height: 100%;
 }
 
-/*body {
-    margin-bottom: 60px;
-
-}*/
 .register-link{
     color:white;
 }
@@ -46,7 +42,6 @@ html {
 }
 
 .postcard-image {
-    /*max-height: 180px;*/
     max-height: 100%;
     object-fit: cover;
     position: relative;
@@ -120,23 +115,6 @@ html {
 .report:hover{
     cursor: pointer;
 }
-
-/*.postcard-post-text {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: justify;
-    height: 100%;
-}*/
-
-    /*.postcard-post-text:before {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        opacity: 1;
-        border-radius: 10px;
-    }*/
 
 .new-thread-btn{
     margin-left:8px;
