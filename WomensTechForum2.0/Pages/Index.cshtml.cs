@@ -1,19 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Text.Json;
+using WomensTechForum2._0.Models;
+using static System.Net.WebRequestMethods;
 
 namespace WomensTechForum2._0.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        public List<Quote> Quotes { get; set; }
+        public Quote RandomQuote { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public async Task OnGetAsync()
         {
-            _logger = logger;
-        }
+            Quotes = await DAL.QuoteManager.GetAllQuotes();
 
-        public void OnGet()
-        {
+            Random rnd = new Random();
+            var randomIndex = rnd.Next(0, Quotes.Count);
+            RandomQuote = Quotes[randomIndex];
 
         }
     }
