@@ -160,3 +160,11 @@ html {
 .message-card{
     max-width:50rem;
 }
+
+/*.header-image{
+    width:1250px;
+}*/
+
+.start-page{
+    background-image:url(../img/banner-g704a4f908_1280.jpg);
+}
