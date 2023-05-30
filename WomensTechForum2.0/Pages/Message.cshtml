@@ -25,18 +25,21 @@
             if (Model.ChosenMessage != null)
             {
                 var messagesender = Model.Users.FirstOrDefault(u => u.Id == @Model.ChosenMessage.SenderId);
+                <div class="card message-card">
+                    <p class="lead card-header">
+                        @Model.ChosenMessage.Title
+                    </p>
+                    <div class="p-2">
+                    <p class="small d-inline">Skickades @Model.ChosenMessage.DateTime.Value.ToString("f") från @messagesender.FirstName @messagesender.LastName </p>
+                    <a asp-route-deleteId="@Model.ChosenMessage.Id"><i data-bs-toggle="tooltip" title="Radera" class="float-end bi bi-trash text-black"></i></a>
+                    <span>&nbsp;</span>
+                    <a class="float-end" href="#" data-bs-toggle="modal" data-bs-target="#answermessage"><i data-bs-toggle="tooltip" title="Svara" class="bi bi-pen-fill text-black mx-2"></i></a>
 
-                <p class="lead">
-                    @Model.ChosenMessage.Title
-                </p>
-                <a class="pe-auto btn btn-warning btn-sm" href="#" data-bs-toggle="modal" data-bs-target="#answermessage"><i data-bs-toggle="tooltip" title="Svara" class="bi bi-pen-fill"></i> Svara</a>
+                    </div>
 
-                <span>&nbsp;</span>
-                <a asp-route-deleteId="@Model.ChosenMessage.Id"><i data-bs-toggle="tooltip" title="Radera" class="bi bi-trash text-black"></i></a>
 
-                <p>Skickades @Model.ChosenMessage.DateTime.Value.ToString("f") från @messagesender.FirstName @messagesender.LastName </p>
-                <p>@Model.ChosenMessage.TextMessage</p>
-
+                    <p class="p-2">@Model.ChosenMessage.TextMessage</p>
+                </div>
 
                 <!--MODAL answer message-->
                 <div class="modal fade" id="answermessage" tabindex="-1" aria-labelledby="answermessageLabel" aria-hidden="true">

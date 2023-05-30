@@ -143,3 +143,20 @@ html {
       width:70px;
       height:auto;
   }
+
+  .manage-link{
+      color:white;
+  }
+  .manage-link:hover{
+      color:#ffc107;
+  }
+
+#profile.active, #email.active, #change-password.active, #personal-data.active {
+    background-color: #ffc107;
+    color: black;
+}
+
+
+.message-card{
+    max-width:50rem;
+}
