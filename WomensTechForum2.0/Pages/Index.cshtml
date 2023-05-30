@@ -18,9 +18,60 @@
     </div>
 </section>
 
+<section class="popular-posts my-5">
+    <div class="container">
+
+        <div class="row text-center g-5">
+
+            <div class="col-lg-6">
+                @{
+                    var latestPosts = Model.Posts.OrderBy(p => p.Date).Take(6);
+                }
+                <h2 class="text-center text-uppercase">Senaste inläggen</h2>
+                <div class="firstpage-bar mx-auto my-4"></div>
+
+                <div class="card p-3 latest-card border-2 rounded-0">
+                    @foreach (var post in latestPosts)
+                    {
+                        var writer = Model.Users.FirstOrDefault(u => u.Id == post.UserId);
+
+                        <div class="card-title">
+                            <h4>@post.Header</h4>
+                        </div>
+                        <div class="card-text">
+                            <p class="small">@writer.FirstName @writer.LastName</p>
+                        </div>
+                        <div class="firstpage-bar mx-auto my-2"></div>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h2 class="text-center text-uppercase">Populära kategorier</h2>
+                <div class="firstpage-bar mx-auto my-4"></div>
+                <div class="card">
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="quote text-center d-flex align-items-center">
+    <div class="flex-column mx-auto">
+
+        <h6 class="d-block display-6 mx-auto"><i class="text-black quote-mark bi bi-chat-right-quote"></i> @Model.RandomQuote.Citation</h6>
+
+        <p class="blockquote-footer mt-4">
+            <cite>Chat GPT</cite>
+        </p>
+    </div>
+</div>
+
+
 <section class="news my-5">
     <h1 class="text-center text-uppercase">Nyheter</h1>
-    <div class="header-bar mx-auto my-4"></div>
+    <div class="firstpage-bar mx-auto my-4"></div>
     <div class="container">
         <div class="row text-center g-5">
 
@@ -36,7 +87,7 @@
                             <p class="card-text">
                                 @article.Description.LimitLength(250)
                             </p>
-                            <a href="@article.Url" class="mt-auto text-uppercase fw-bolder text-decoration-none text-black">Läs mer <i class="bi bi-chevron-double-right"></i></a>
+                            <a href="@article.Url" class="mt-auto text-uppercase fw-bolder text-decoration-none text-black" target="_blank">Läs mer <i class="bi bi-chevron-double-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -51,7 +102,7 @@
 
 
 
-<div class="quote text-center d-flex align-items-center">
+@*<div class="quote text-center d-flex align-items-center">
     <div class="flex-column mx-auto">
 
         <h6 class="d-block display-6 mx-auto"><i class="text-black quote-mark bi bi-chat-right-quote"></i> @Model.RandomQuote.Citation</h6>
@@ -60,4 +111,4 @@
             <cite>Chat GPT</cite>
         </p>
     </div>
-</div>
+</div>*@
