@@ -20,35 +20,9 @@ namespace WomensTechForum2._0.DAL
             });
             if (articleResponse.Status == Statuses.Ok)
             {
-                news = articleResponse.Articles.ToList();
-                //string responseString = articleResponse.Articles.ToString();
-                //news = JsonSerializer.Deserialize<List<News>>(responseString);
+                news = articleResponse.Articles.ToList();              
             }
             return news;
         }
-
-        //private static Uri BaseAddress = new("https://localhost:44392/");
-
-        //public static async Task<List<Message>> GetAllMessages()
-        //{
-        //    List<Message> messages = new();
-
-        //    using (var client = new HttpClient())
-        //    {
-        //        client.BaseAddress = BaseAddress;
-        //        HttpResponseMessage response = await client.GetAsync("api/Messages");
-        //        //Get i apiet körs
-
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            string responseString = await response.Content.ReadAsStringAsync();
-        //            messages = JsonSerializer.Deserialize<List<Message>>(responseString);
-        //        }
-        //    }
-
-        //    return messages;
-        //}
-
-
     }
 }

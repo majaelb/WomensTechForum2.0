@@ -22,21 +22,22 @@
     <h1 class="text-center text-uppercase">Nyheter</h1>
     <div class="header-bar mx-auto my-4"></div>
     <div class="container">
-        <div class="row text-center g-4">
+        <div class="row text-center g-5">
 
             @foreach (var article in Model.News)
             {
-                <div class="col-md-4">
-                    <div class="card rounded-0 p-3">
+                <div class="col-lg-4 col-md-6  d-flex">
+                    <div class="card news-card rounded-0 border-0">
+                        <div class="card-body d-flex flex-column">
                             <img class="article-image" src="@article.UrlToImage">
-                        <h3 class="card-title my-3">
-                            @article.Title
-                        </h3>
-                        <p class="card-text">
-                            @article.Description.LimitLength(250)
-                        </p>
-                        <a href="@article.Url" class="text-uppercase fw-bolder text-decoration-none text-black">Läs mer <i class="bi bi-chevron-double-right"></i></a>
-
+                            <h3 class="card-title my-3">
+                                @article.Title
+                            </h3>
+                            <p class="card-text">
+                                @article.Description.LimitLength(250)
+                            </p>
+                            <a href="@article.Url" class="mt-auto text-uppercase fw-bolder text-decoration-none text-black">Läs mer <i class="bi bi-chevron-double-right"></i></a>
+                        </div>
                     </div>
                 </div>
             }
@@ -50,18 +51,13 @@
 
 
 
+<div class="quote text-center d-flex align-items-center">
+    <div class="flex-column mx-auto">
 
-<section class="text-light p-5 p-lg-0 pt-lg-5 text-center text-sm-start min-vh-100">
-    <div class="container ">
+        <h6 class="d-block display-6 mx-auto"><i class="text-black quote-mark bi bi-chat-right-quote"></i> @Model.RandomQuote.Citation</h6>
 
-        @*--Citat--*@
-        <article class="postcard dark-card text-white py-1 px-4 m-2">
-            <div class="postcard-text">
-
-                <p class="lead text-warning"><i style="font-size:xx-large" class="text-white bi bi-chat-square-quote"></i> @Model.RandomQuote.Citation</p>
-
-            </div>
-        </article>
+        <p class="blockquote-footer mt-4">
+            <cite>Chat GPT</cite>
+        </p>
     </div>
-</section>
-
+</div>

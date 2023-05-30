@@ -200,6 +200,16 @@ html {
         font-size: 18px;
     }
 
+
 .article-image{
-    height: 20rem;
+    height: 15rem;
+    width:auto;
+}
+
+.quote{
+    height: 50vh;
+    background-color: #d0bbbb
+}
+.quote-mark{
+    font-size:2.9rem;
 }

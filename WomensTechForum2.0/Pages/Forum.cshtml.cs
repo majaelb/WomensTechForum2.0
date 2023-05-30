@@ -178,7 +178,7 @@ namespace WomensTechForum2._0.Pages
                     await _context.SaveChangesAsync(); //Spara
 
                     int id = _context.PostThread.FirstOrDefault(p => p.Id == likePostThread.PostThreadId).PostId;
-                    string url = "./Forum?chosenPostId=" + id.ToString();
+                    string url = "./Forum?chosenPostId=" + id.ToString() + "#" + unlikePTid.ToString();
                     return Redirect(url);
                 }
             }
@@ -194,7 +194,7 @@ namespace WomensTechForum2._0.Pages
                 await _context.SaveChangesAsync(); //Spara
 
                 int id = _context.PostThread.FirstOrDefault(p => p.Id == likePostThread.PostThreadId).PostId;
-                string url = "./Forum?chosenPostId=" + id.ToString();
+                string url = "./Forum?chosenPostId=" + id.ToString() + "#"+ likePTid.ToString();
                 return Redirect(url);
 
             }

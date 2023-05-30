@@ -386,8 +386,8 @@
 
                         @*Post Threads*@
                         @{
-                            var chosenPostThreads = Model.PostThreads.Where(p => p.PostId == Model.ChosenPost.Id);
-                            var index = 0;
+                            var chosenPostThreads = Model.PostThreads.Where(p => p.PostId == Model.ChosenPost.Id).ToList();
+                            
                             
                         }
                         @if (chosenPostThreads != null && chosenPostThreads.Any())
@@ -395,15 +395,15 @@
                         {
                             @foreach (var postthread in chosenPostThreads)
                             {
-                                index++;
 
+                                var Ptnumber = chosenPostThreads.IndexOf(postthread);
                                 var ptWriter = Model.Users.Where(u => u.Id == postthread.UserId).FirstOrDefault();
                                 var originalWriterId = Model.Posts.FirstOrDefault(u => u.Id == postthread.PostId).UserId;
                                 var originalWriter = Model.Users.FirstOrDefault(u => u.Id == originalWriterId);
                                 var color = ptWriter.Id == originalWriter.Id ? "dark-card" : "bg-info bg-opacity-10";
                                 var postthreaddate = @postthread.Date.Value.ToString("dd") + " " + @postthread.Date.Value.ToString("Y") + " " + @postthread.Date.Value.ToString("t");
 
-                                <article class="postcard @color text-white py-1 px-4 m-2">
+                                <article id="@postthread.Id" class="postcard @color text-white py-1 px-4 m-2">
                                     <div class="postcard-text w-100">
                                         <div class="row w-100">
                                             <div class="col-md-2">
@@ -423,7 +423,7 @@
                                             </div>
                                             
                                             <div class="col-md-10">
-                                                <p><i class="bi bi-calendar3"></i> @postthreaddate <span class="text-muted float-end">#1</span></p>
+                                                <p><i class="bi bi-calendar3"></i> @postthreaddate <span class="text-muted float-end">#@(Ptnumber + 2)</span></p>
                                                 <div class="header-bar"></div>
                                                 @if (postthread.PTAnswerId != null)
                                                 {
@@ -472,18 +472,6 @@
                                                 {
                                                     <a asp-route-likePTid="@postthread.Id"><i class="bi bi-heart text-danger mx-1"></i></a>
                                                 }
-
-                                                @*if (forumManager.CheckIfPTLiked(postthread.Id, Model.CurrentUser.Id))
-                                                {
-                                                    <a class="unlike-button" data-ptid="@postthread.Id" data-index="@index" onclick="unlikePostThread(event)"><i class="bi bi-heart-fill text-danger mx-1"></i></a>
-                                                }
-                                                else
-                                                {
-                                                    <a class="like-button" data-ptid="@postthread.Id" data-index="@index" onclick="likePostThread(event)"><i class="bi bi-heart text-danger mx-1"></i></a>
-                                                }*@
-
-
-
 
                                                 var count = @Model.LikedPostThreads.Where(p => p.PostThreadId == postthread.Id).Count();
                                                 <span class="small">@count</span>
