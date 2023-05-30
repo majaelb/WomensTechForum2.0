@@ -14,8 +14,8 @@ namespace WomensTechForum2._0.DAL
             var newsAPIClient = new NewsApiClient("bbe6005d1e2d430290087505dabf9b4d");
             var articleResponse = newsAPIClient.GetEverything(new NewsAPI.Models.EverythingRequest
             {
-                Q = "programming",
-                Language = Languages.SV,
+                Q = "programming AND IT",
+                Language = Languages.EN,
                 PageSize = 6
             });
             if (articleResponse.Status == Statuses.Ok)
