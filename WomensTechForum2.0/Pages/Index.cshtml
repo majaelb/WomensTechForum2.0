@@ -2,7 +2,7 @@
 @using Helpers
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Startsida";
 }
 
 <section class="banner">
@@ -12,7 +12,7 @@
         <p class="lead my-4">
             Vi erbjuder de senaste nyheterna inom tech och intressanta diskussioner i våra forum
         </p>
-        <button class="btn btn-warning btn-lg" data-bs-toggle="modal" data-bs-target="#enroll">
+        <button class="btn btn-light btn-lg rounded-0" data-bs-toggle="modal" data-bs-target="#enroll">
             Bli medlem här för att joina vårt community
         </button>
     </div>
@@ -23,33 +23,53 @@
 
         <div class="row text-center g-5">
 
-            <div class="col-lg-6">
-                @{
-                    var latestPosts = Model.Posts.OrderBy(p => p.Date).Take(6);
-                }
-                <h2 class="text-center text-uppercase">Senaste inläggen</h2>
-                <div class="firstpage-bar mx-auto my-4"></div>
 
-                <div class="card p-3 latest-card border-2 rounded-0">
-                    @foreach (var post in latestPosts)
-                    {
-                        var writer = Model.Users.FirstOrDefault(u => u.Id == post.UserId);
-
-                        <div class="card-title">
-                            <h4>@post.Header</h4>
-                        </div>
-                        <div class="card-text">
-                            <p class="small">@writer.FirstName @writer.LastName</p>
-                        </div>
-                        <div class="firstpage-bar mx-auto my-2"></div>
+                <div class="col-lg-6">
+                    @{
+                        var latestPosts = Model.Posts.OrderBy(p => p.Date).Take(5);
                     }
+                    <h2 class="text-center text-uppercase">Senaste inläggen</h2>
+                    <div class="firstpage-bar mx-auto my-4"></div>
+
+                    <div class="card p-3 latest-card border-2 rounded-0">
+                        @foreach (var post in latestPosts)
+                        {
+                            var writer = Model.Users.FirstOrDefault(u => u.Id == post.UserId);
+
+                            <div class="card-title">
+                                <h4 class="zoom-text"><a href="./Forum?chosenPostId=@post.Id" class="text-black text-decoration-none">@post.Header</a></h4>
+                            </div>
+                            <div class="card-text">
+
+                                <p class="small">@writer.FirstName @writer.LastName</p>
+                            </div>
+                            <div class="firstpage-bar mx-auto my-2"></div>
+                        }
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-6">
-                <h2 class="text-center text-uppercase">Populära kategorier</h2>
-                <div class="firstpage-bar mx-auto my-4"></div>
-                <div class="card">
-                </div>
+                <div class="col-lg-6">
+                    @{
+                        var popCategories = Model.Posts.GroupBy(p => p.SubCategoryId).OrderByDescending(c => c.Count()).Take(5);
+                    }
+                    <h2 class="text-center text-uppercase">Populära kategorier</h2>
+                    <div class="firstpage-bar mx-auto my-4"></div>
+                    <div class="card p-3 latest-card border-2 rounded-0">
+                        @if (popCategories != null)
+                        {
+
+                            @foreach (var cat in popCategories)
+                            {
+                                var subCategory = Model.SubCategories.FirstOrDefault(s => s.Id == cat.Key);
+                                <div class="card-title">
+                                    <h4 class="zoom-text"><a href="./Forum?chosenSubId=@subCategory.Id" class="text-black text-decoration-none">@subCategory.Name</a></h4>
+                                </div>
+                                <div class="card-text">
+                                    <p class="small">@cat.Count() inlägg</p>
+                                </div>
+                                <div class="firstpage-bar mx-auto my-2"></div>
+                            }
+                        }
+                    </div>
 
             </div>
         </div>

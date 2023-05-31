@@ -554,7 +554,7 @@
             <div class="container py-2">
                 <h1 class="text-center text-warning display-3">Diskussionsforum</h1>
                 <div class="header-bar mx-auto"></div>
-                <h2 class="text-center text-warning display-3">Huvudkategorier</h2>
+                <h2 class="text-center text-warning display-5">Huvudkategorier</h2>
 
                @foreach (var cat in Model.MainCategories)
                 {
@@ -569,7 +569,7 @@
                                 {
                                     var postsInSub = @Model.Posts.Where(p => p.SubCategoryId == sub.Id);
                                     var postsText = postsInSub.Count() == 1 ? "tråd" : "trådar";
-                                    <p class="lead"><a class="text-decoration-none text-warning" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description | <span class="text-muted">@postsInSub.Count() @postsText</span></span></p>
+                                    <p class="lead"><a class="text-decoration-none text-warning" asp-route-chosenSubId="@sub.Id">@sub.Name</a> <span class="small"> - @sub.Description | <span class="text-muted fs-6">@postsInSub.Count() @postsText</span></span></p>
                                 }
                             }
                             else

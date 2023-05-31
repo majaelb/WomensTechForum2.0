@@ -201,18 +201,20 @@ html {
     }
 
 
-.article-image{
+.article-image {
     height: 15rem;
-    width:auto;
+    width: auto;
 }
 
-.quote{
+.quote {
     height: 50vh;
     background-color: #d0bbbb
 }
-.quote-mark{
-    font-size:2.9rem;
+
+.quote-mark {
+    font-size: 2.9rem;
 }
+
 .firstpage-bar {
     width: 150px;
     height: 2px;
@@ -220,7 +222,12 @@ html {
     border-radius: 5px;
     background-color: #e1dede;
 }
-
-/*.latest-card{
-    background-color: #eeeaea
-}*/
+.text-header{
+    color: #b09191;
+}
+.btn-header {
+    background-color: #b09191;
+}
+.zoom-text:hover {
+    transform: scale(1.1);
+}
